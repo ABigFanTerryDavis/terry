@@ -28,6 +28,16 @@ const dom = new JSDOM(html, {
 const { window } = dom;
 window.addEventListener('error', (e) => errors.push(String(e.error ?? e.message)));
 
+// Load the real built stylesheet so jsdom can resolve the cascade. A `[hidden]`
+// element that some author rule re-displays is invisible to a DOM-only test but
+// very much visible to a reader -- which is exactly how this shipped once.
+const cssFile = fs.readdirSync(path.join(dist, 'assets')).find((f) => f.endsWith('.css'));
+if (cssFile) {
+  const style = window.document.createElement('style');
+  style.textContent = fs.readFileSync(path.join(dist, 'assets', cssFile), 'utf8');
+  window.document.head.appendChild(style);
+}
+
 // Serve the real built assets over the virtual origin.
 const served = new Map();
 function fetchShim(url) {
@@ -90,6 +100,32 @@ check('crumbs show file', ($('#crumbs')?.textContent ?? '').includes('KMisc'), $
 const badges = $$('#badges .badge').map((b) => b.textContent);
 check('LOC badge rendered', badges.some((b) => /\d+ code/.test(b)), badges.join(' | '));
 check('code lines rendered', $$('#code .l').length > 100, `${$$('#code .l').length} lines`);
+
+// The regression that shipped broken: #empty carried the `hidden` attribute,
+// but `.empty { display: flex }` beat the UA stylesheet's `[hidden]` rule, so
+// the placeholder stayed on top of the code and opening a file did nothing
+// visible. jsdom does not resolve the cascade, so assert on the built CSS
+// directly: the guard has to be present and has to be !important.
+const builtCss = cssFile ? fs.readFileSync(path.join(dist, 'assets', cssFile), 'utf8') : '';
+const hiddenGuard = /\[hidden\]\s*\{[^}]*display:\s*none\s*!important/.test(builtCss);
+check('built CSS keeps [hidden] authoritative', hiddenGuard);
+
+// Nothing may set display on a selector that also carries [hidden], because
+// that is precisely what outranks the UA rule once the guard is gone.
+const displayRules = [...builtCss.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+  .filter(([, , body]) => /(^|;)\s*display\s*:/.test(body))
+  .map(([, sel]) => sel.trim());
+const risky = displayRules.filter((sel) =>
+  sel
+    .split(',')
+    .map((s) => s.trim())
+    .some((s) => s.includes('[hidden]') && s !== '[hidden]'),
+);
+check(
+  'no author rule competes with [hidden]',
+  risky.length === 0,
+  risky.join(' | '),
+);
 check('highlighter marks comments', $$('#code .c-com').length > 0);
 check('highlighter marks types', $$('#code .c-type').length > 0);
 check(

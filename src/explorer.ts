@@ -32,8 +32,6 @@ interface TreeNode {
   path: string;
   children: Map<string, TreeNode>;
   files: FileEntry[];
-  /** total files at or below this node, for the folder counts */
-  count: number;
 }
 
 const $ = <T extends HTMLElement>(sel: string): T => {
@@ -72,7 +70,7 @@ const nf = (n: number) => n.toLocaleString('en-US');
 /* ------------------------------------------------------------------- tree */
 
 function makeNode(name: string, path: string): TreeNode {
-  return { name, path, children: new Map(), files: [], count: 0 };
+  return { name, path, children: new Map(), files: [] };
 }
 
 function buildTree(files: FileEntry[]): TreeNode {
@@ -94,14 +92,6 @@ function buildTree(files: FileEntry[]): TreeNode {
     }
     node.files.push(f);
   }
-  // count files at or below each node
-  const count = (n: TreeNode): number => {
-    let c = n.files.length;
-    for (const child of n.children.values()) c += count(child);
-    n.count = c;
-    return c;
-  };
-  count(root);
   return root;
 }
 
@@ -109,14 +99,11 @@ function matches(f: FileEntry, q: string): boolean {
   return f.path.toLowerCase().includes(q);
 }
 
-/** Every file under a directory prefix, depth-first in name order. */
-function underPrefix(node: TreeNode, prefix: string, out: FileEntry[]): void {
-  if (node.path === prefix || (prefix === '' && node.path === '')) {
-    for (const f of node.files) out.push(f);
-    for (const c of sortedChildren(node)) underPrefix(c, prefix, out);
-    return;
-  }
-  for (const c of sortedChildren(node)) underPrefix(c, prefix, out);
+/** Every file at or below a node, depth-first in name order. */
+function collectUnder(node: TreeNode, out: FileEntry[]): FileEntry[] {
+  for (const f of node.files) out.push(f);
+  for (const c of sortedChildren(node)) collectUnder(c, out);
+  return out;
 }
 
 function sortedChildren(n: TreeNode): TreeNode[] {
@@ -155,8 +142,7 @@ function fileButton(f: FileEntry): HTMLButtonElement {
 
 function renderNode(n: TreeNode, host: HTMLElement, depth: number, q: string): void {
   for (const c of sortedChildren(n)) {
-    const kids: FileEntry[] = [];
-    underPrefix(c, c.path, kids);
+    const kids = collectUnder(c, []);
     const shown = q ? kids.filter((f) => matches(f, q)) : kids;
     if (q && shown.length === 0) continue;
 
@@ -337,9 +323,11 @@ async function open(path: string, line?: number): Promise<void> {
     pre.textContent = text;
   } else {
     const lines = text.split('\n');
+    // The spans are display:block, so they must be joined with no separator --
+    // a newline here would render as an extra blank line between each one.
     pre.innerHTML = lines
       .map((l, i) => `<span class="l" data-n="${i + 1}">${highlightHolyC(l) || ' '}</span>`)
-      .join('\n');
+      .join('');
   }
   scroll.scrollTop = 0;
 

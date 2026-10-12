@@ -46,6 +46,15 @@
   box-sizing: border-box;
 }
 
+/* The UA stylesheet's `[hidden] { display: none }` loses to any author rule
+   that sets `display`, which silently un-hides .empty (display: flex) and
+   leaves the placeholder sitting on top of the file the reader just opened.
+   jsdom does not resolve this cascade, so the test suite cannot catch it --
+   keep the attribute authoritative. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
