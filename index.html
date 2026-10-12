@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Terry A. Davis — the record</title>
+    <meta
+      name="description"
+      content="A source-level tribute to Terry A. Davis and TempleOS. Every figure measured directly from the TempleOS source tree; his actual compositions, rendered from his own notation."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="#record">The record</a>
+        <a href="#autopsy">Autopsy</a>
+        <a href="#listen">Listen</a>
+        <a href="#glyphs">Glyphs</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#colophon">Sources</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- ------------------------------------------------------------ hero -->
+      <section class="hero">
+        <p class="eyebrow"><span>December 15, 1969</span> &mdash; <span>August 11, 2018</span></p>
+        <h1 class="hero-title">Terry&nbsp;A.&nbsp;Davis</h1>
+        <p class="lede">
+          He wrote an operating system by himself. Not a shell, not a toy kernel &mdash; the boot
+          loaders, the compiler, the memory manager, the filesystem, the windowing system, the
+          text-to-music editor, the flight simulator, and the games. Then he put all of it in the
+          public domain and gave it away.
+        </p>
+        <p class="lede lede-quiet">
+          This page takes that work apart. Every number here was measured from the TempleOS source
+          tree itself rather than repeated from a second-hand article, and the music in the
+          <a href="#listen">Listen</a> section is his own, replayed from the notation strings in
+          his code.
+        </p>
+        <div class="hero-facts" id="hero-facts"></div>
+      </section>
+
+      <!-- ---------------------------------------------------------- record -->
+      <section id="record" class="section">
+        <h2>The record</h2>
+        <div class="tiles" id="tiles"></div>
+        <aside class="callout">
+          <p>
+            <strong>For scale:</strong> at the time of its release TempleOS was measured at roughly
+            121,000 lines. Windows 7 shipped at around 40 million. The gap is not a claim about
+            quality &mdash; it is a reminder of what one person can hold in their head at once when
+            nobody else is writing any of it.
+          </p>
+        </aside>
+      </section>
+
+      <!-- ---------------------------------------------------------- autopsy -->
+      <section id="autopsy" class="section">
+        <h2>Autopsy</h2>
+        <p class="section-lede">
+          The tree was cloned, every file walked, and every line classified as code, comment or
+          blank. Two bundled data files &mdash; the King James Bible and a PCI device dump &mdash; are
+          excluded from the totals and reported separately, because counting scripture as source code
+          would be both silly and dishonest.
+        </p>
+
+        <figure class="chart-block">
+          <figcaption>
+            <h3>Where the 116,129 lines live</h3>
+            <p>Top-level directories in the source tree, by lines of code.</p>
+          </figcaption>
+          <div class="chart-host" id="chart-dirs"></div>
+        </figure>
+
+        <figure class="chart-block">
+          <figcaption>
+            <h3>Not much of it is commented</h3>
+            <p>
+              TempleOS is dense and largely self-describing &mdash; the source reads as the manual.
+              That is a stylistic consequence of working alone for decades with nobody to explain
+              things to.
+            </p>
+          </figcaption>
+          <div class="chart-host" id="chart-mix"></div>
+          <div id="legend-mix"></div>
+        </figure>
+
+        <figure class="chart-block">
+          <figcaption>
+            <h3>Forty-eight commits, one author, eleven years</h3>
+            <p>
+              The published repository records releases rather than daily work, so this is not a
+              measure of how much he wrote &mdash; it is a measure of how little ceremony there was.
+              One person, shipping versions of a finished thing.
+            </p>
+          </figcaption>
+          <div class="chart-host" id="chart-commits"></div>
+        </figure>
+
+        <figure class="chart-block">
+          <figcaption>
+            <h3>The twenty largest files</h3>
+            <p>Single largest is the kernel itself.</p>
+          </figcaption>
+          <div class="chart-host" id="chart-files"></div>
+          <div class="table-wrap">
+            <table id="table-files"></table>
+          </div>
+        </figure>
+
+        <div class="prose-grid">
+          <div>
+            <h3>What "from scratch" meant here</h3>
+            <p>
+              Not a hyperbole. His own credits file states that TempleOS executes no code he did not
+              write, aside from a handful of BIOS calls for configuration &mdash; and that he wrote the
+              compiler too, so no GCC. That means the C preprocessor, lexer, parser, optimiser and
+              code generator in <code>Compiler/</code> are his, as is the <code>#include</code>-at-the-
+              command-line workflow and the JIT that compiles a program the moment you run it.
+            </p>
+            <p>
+              Roughly <strong>19,139 lines</strong> sit in <code>Compiler/</code>. That is a real
+              compiler, written by one person, that compiles 50,000 lines in under a second.
+            </p>
+          </div>
+          <div>
+            <h3>The parts nobody expects</h3>
+            <ul class="feature-list">
+              <li><span>Boot loaders</span> written from scratch, so no GRUB</li>
+              <li><span>RedSea</span> filesystem, plus FAT32 for interoperability</li>
+              <li><span>VGA</span> driver into 640&times;480 with 16 colours, text drawn by hand</li>
+              <li><span>PS/2</span> keyboard and mouse drivers</li>
+              <li><span>DolDoc</span> &mdash; a markup, layout and rendering system for documents</li>
+              <li><span>Psalmody</span> &mdash; a graphical sheet-music editor with playback</li>
+              <li><span>A JIT</span> with no bytecode anywhere, plus an ahead-of-time mode</li>
+              <li><span>Self-hosting</span> &mdash; it compiles a distribution of itself</li>
+              <li><span>3D sprites</span> as rotated meshes, not stored as GIFs</li>
+              <li><span>No networking</span>, deliberately, on the grounds that it is not needed</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------- listen -->
+      <section id="listen" class="section">
+        <h2>Listen</h2>
+        <p class="section-lede">
+          TempleOS had no sound card. It drove the PC speaker &mdash; a single square-wave voice &mdash;
+          through a notation string like <code>6hEqDC5B6CDhE</code>. The parser below is a direct
+          port of <code>Play()</code> from <code>Adam/ASnd.HC</code>, and the pitch comes from his own
+          formula in <code>Kernel/KMisc.HC</code>:
+          <code>440/32 &times; 2<sup>ona/12</sup></code>, where A4 is <code>ona 60</code>.
+        </p>
+        <p class="section-lede quiet">
+          These are his compositions, lifted verbatim from the source tree &mdash; melody and lyric
+          together, exactly as they appear in the files.
+        </p>
+        <div class="player-controls">
+          <label class="ctl">
+            <span>Voice</span>
+            <input id="volume" type="range" min="0" max="100" value="45" />
+          </label>
+          <label class="ctl checkbox">
+            <input id="loop" type="checkbox" checked />
+            <span>Loop &mdash; in TempleOS these run forever until you press a key</span>
+          </label>
+          <button id="stop-all" class="btn btn-ghost" type="button">Stop all</button>
+        </div>
+        <div id="songs" class="songs"></div>
+
+        <figure class="chart-block">
+          <figcaption>
+            <h3>The grammar, as he documented it</h3>
+            <p>Transcribed from the comment block above <code>Play()</code>.</p>
+          </figcaption>
+          <div class="table-wrap">
+            <table class="grammar">
+              <tbody>
+                <tr><td><code>w h q e s</code></td><td>whole, half, quarter, eighth, sixteenth</td></tr>
+                <tr><td><code>t</code></td><td>set to two-thirds of the current duration</td></tr>
+                <tr><td><code>.</code></td><td>set to one and a half times the current duration</td></tr>
+                <tr><td><code>(</code></td><td>tie, placed before the note to be extended</td></tr>
+                <tr><td><code>1</code>&ndash;<code>7</code></td><td>set octave; middle C is octave 4</td></tr>
+                <tr><td><code>M3/4</code></td><td>set the meter</td></tr>
+                <tr><td><code>A</code>&ndash;<code>G</code></td><td>play a note, optionally with <code>#</code> or <code>b</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="fineprint">
+            Durations persist until changed, which is why a string can start <code>6h</code> and stay
+            in half notes for the whole phrase. Tempo is in quarter-notes per second; his default was
+            2.5, and it climbs with the number.
+          </p>
+        </figure>
+      </section>
+
+      <!-- ---------------------------------------------------------- glyphs -->
+      <section id="glyphs" class="section">
+        <h2>Glyphs</h2>
+        <p class="section-lede">
+          TempleOS runs at 640&times;480 in sixteen colours, which he attributed to a specific
+          instruction. Those constraints are the whole aesthetic: a fixed sixteen-entry palette, an
+          80&times;30 grid, and an 8&times;8 bitmap font stretched twice as tall.
+        </p>
+        <div class="glyph-block">
+          <div class="glyph-canvas" id="font-sample"></div>
+          <p class="fineprint" id="font-credit"></p>
+        </div>
+        <h3>The palette, in order</h3>
+        <div class="palette" id="palette"></div>
+        <p class="fineprint">
+          Sixteen entries, indices 0&ndash;15, exactly as the kernel defines them. There is no
+          anti-aliasing and no second shade of anything.
+        </p>
+      </section>
+
+      <!-- -------------------------------------------------------- timeline -->
+      <section id="timeline" class="section">
+        <h2>Timeline</h2>
+        <p class="section-lede">
+          A short life, and a long single project inside it. Dates below are from his own account
+          and from the commit history of the source tree.
+        </p>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+
+      <!-- --------------------------------------------------------- colophon -->
+      <section id="colophon" class="section">
+        <h2>Sources &amp; method</h2>
+        <div class="prose-grid">
+          <div>
+            <h3>What was measured</h3>
+            <p>
+              Every figure in the Autopsy section comes from
+              <a href="https://github.com/cia-foundation/TempleOS">cia-foundation/TempleOS</a>, walked
+              file by file at build time. Lines are split into code, comment and blank by a parser
+              that understands both <code>//</code> and <code>/* */</code>. The commit counts come
+              from <code>git log</code> on that repository. The songs are the literal
+              <code>Play()</code> string literals found in <code>Demo/Snd</code> and
+              <code>Apps/Psalmody/Examples</code>. The font is the <code>sys_font_std[]</code> table
+              in <code>Kernel/FontStd.HC</code>, decoded pixel by pixel.
+            </p>
+            <p>
+              Excluded from all totals: <code>Misc/Bible.TXT</code> (100,118 lines of King James
+              Version, bundled for scripture search) and <code>Misc/PCIDevices.DD</code> (a 9,430-line
+              device list). Including them would have added 109,548 phantom lines to the total &mdash;
+              enough to make this page look more impressive than the work actually was.
+            </p>
+          </div>
+          <div>
+            <h3>What is cited, not measured</h3>
+            <p>
+              The biographical dates and the early life come from his Wikipedia entry and from
+              accounts of his own writing &mdash; specifically <code>::/Doc/Credits.DD</code> and
+              <code>::/Doc/FAQ.DD</code> in the source itself, where he describes writing the whole
+              system &ldquo;over the past 19.1 years (full-time)&rdquo;.
+            </p>
+            <p>
+              For the record: TempleOS is in the public domain, not merely open source. His own
+              credits name the handful of things that were not his &mdash; a FreeDOS-derived font
+              table, a Cyrillic font taken without permission from Orient Display, an LZW
+              compressor adapted from a magazine article he had implemented years earlier at
+              Ticketmaster, and a heap algorithm adapted from a VAX operating system. He listed all
+              of it. That honesty is part of the work.
+            </p>
+          </div>
+        </div>
+        <footer class="foot">
+          <p>
+            Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+            independent reading of them.
+          </p>
+        </footer>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

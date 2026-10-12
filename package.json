@@ -1,0 +1,21 @@
+{
+  "name": "terry",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A source-level tribute to Terry A. Davis and TempleOS",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "esbuild src/music.ts --bundle --format=esm --outfile=.cache/music.bundle.mjs --log-level=warning && node test/music.test.mjs",
+    "test:smoke": "npm run build && node test/smoke.test.mjs",
+    "data": "node scripts/analyze-source.mjs && node scripts/extract-assets.mjs && node scripts/regen.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
