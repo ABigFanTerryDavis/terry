@@ -41,6 +41,9 @@ jobs:
       - name: Smoke test the built bundle
         run: node test/smoke.test.mjs
 
+      - name: Smoke test the source explorer
+        run: node test/explorer.test.mjs
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

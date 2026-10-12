@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Source explorer — TempleOS</title>
+    <meta
+      name="description"
+      content="Read the TempleOS source tree. Every file Terry A. Davis wrote, browsable and searchable, with per-file line counts."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body class="explorer-body">
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <span class="nav-current">Explorer</span>
+        <a href="./index.html#timeline">Timeline</a>
+        <a href="./index.html#colophon">Sources</a>
+      </nav>
+    </header>
+
+    <div class="explorer">
+      <!-- ------------------------------------------------------------ rail -->
+      <aside class="rail" id="rail">
+        <div class="rail-head">
+          <p class="rail-title">TempleOS source</p>
+          <p class="rail-stats" id="rail-stats">loading index&hellip;</p>
+          <div class="search">
+            <input
+              id="search"
+              type="search"
+              placeholder="filter by path  ( / )"
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Filter files by path"
+            />
+            <button id="clear" class="clear" type="button" aria-label="Clear filter" hidden>&times;</button>
+          </div>
+        </div>
+        <nav class="tree" id="tree" aria-label="File tree"></nav>
+        <p class="rail-foot" id="rail-foot"></p>
+      </aside>
+
+      <!-- ---------------------------------------------------------- viewer -->
+      <section class="viewer" id="viewer">
+        <div class="viewer-head">
+          <p class="crumbs" id="crumbs"></p>
+          <div class="badges" id="badges"></div>
+        </div>
+        <div class="notice" id="notice" hidden></div>
+        <div class="code-wrap" id="code-wrap">
+          <div class="empty" id="empty">
+            <p class="empty-title">Pick a file.</p>
+            <p class="empty-body">
+              659 files, 3.4&nbsp;MB of readable HolyC, assembly and DolDoc &mdash; every line Terry A.
+              Davis wrote, by hand. Nothing here is generated, and nothing is mine.
+            </p>
+            <ul class="empty-suggest">
+              <li><button type="button" data-goto="Compiler/CMain.HC">Compiler/CMain.HC</button> the front door</li>
+              <li><button type="button" data-goto="Kernel/KMisc.HC">Kernel/KMisc.HC</button> where the pitch formula lives</li>
+              <li><button type="button" data-goto="Adam/ASnd.HC">Adam/ASnd.HC</button> the music notation parser</li>
+              <li><button type="button" data-goto="Kernel/FontStd.HC">Kernel/FontStd.HC</button> the font on the other page</li>
+              <li><button type="button" data-goto="Doc/Credits.DD">Doc/Credits.DD</button> his own credits, in his own words</li>
+            </ul>
+          </div>
+          <div class="code-scroll" id="code-scroll" hidden>
+            <pre class="code" id="code"></pre>
+          </div>
+        </div>
+        <p class="viewer-foot" id="viewer-foot"></p>
+      </section>
+    </div>
+
+    <script type="module" src="/src/explorer.ts"></script>
+  </body>
+</html>

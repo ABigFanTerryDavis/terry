@@ -8,9 +8,15 @@ import { JSDOM } from 'jsdom';
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const dist = path.join(root, 'dist');
 const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-const jsFile = fs.readdirSync(path.join(dist, 'assets')).find((f) => f.endsWith('.js'));
-if (!jsFile) throw new Error('no built js found');
-const code = fs.readFileSync(path.join(dist, 'assets', jsFile), 'utf8');
+const jsFile = fs
+  .readdirSync(path.join(dist, 'assets'))
+  .find((f) => /^(main|index)-.*\.js$/.test(f));
+if (!jsFile) throw new Error('no built main js found');
+// jsdom's eval cannot run ES modules, and these bundles have no exports, so
+// dropping the import statements turns them into plain scripts.
+const code = fs
+  .readFileSync(path.join(dist, 'assets', jsFile), 'utf8')
+  .replace(/^import\s*[^;]*;/gm, '');
 
 const errors = [];
 const dom = new JSDOM(html, { runScripts: 'outside-only', pretendToBeVisual: true });

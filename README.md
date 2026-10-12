@@ -17,6 +17,50 @@ replayed from the `Play()` notation strings in his code.
 | **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year. Real charts, real numbers. |
 | **Listen** | Four of his compositions, played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. |
 | **Glyphs** | His 8×8 bitmap font decoded from `sys_font_std[]` and rendered pixel by pixel, plus the VGA 16-colour palette. |
+| **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable, with per-file line counts that match the Autopsy charts exactly. |
+
+## The source explorer
+
+`explorer.html` is a full read-only browser for the TempleOS tree — every file,
+no sampling.
+
+```
+659 files   3.42 MB readable   53 files trimmed
+```
+
+Files are fetched individually, so the 107 kB index loads first and each file
+arrives only when you open it.
+
+### The binary-tail problem
+
+**53 files are not what they look like.** They are HolyC or DolDoc source with a
+binary blob appended — an embedded sprite or sound sample. Left alone they are
+unreadable:
+
+| File | Original | Readable | What the rest was |
+| --- | --- | --- | --- |
+| `Demo/Snd/WaterFowl.HC` | 308,908 B | **2,379 B** | 12 lines of song code, then 306,529 bytes of audio |
+| `Demo/Games/Stadium/StadiumBG.DD` | 302,127 B | **12 B** | almost entirely image data |
+| `Apps/Titanium/Titanium.HC` | 106,011 B | **17,879 B** | embedded sprites |
+
+`scripts/build-explorer.mjs` cuts each file at the first run of 32 consecutive
+non-printable bytes, so **1.78 MB (34% of the tree) is never shown as garbage**.
+The UI says so on any affected file rather than silently truncating.
+
+Encoding is handled too: the extractor decodes as UTF-8 and falls back to
+latin1, which is why no file renders as mojibake.
+
+### Features
+
+- Tree by real TempleOS paths, with folder counts and per-file LOC
+- Deep-linkable URLs — `explorer.html#/Kernel/KMisc.HC:163` opens that line and
+  scrolls to it
+- Path filter (`/` to focus, `Esc` to clear), `j`/`k` to walk files
+- Hand-rolled HolyC highlighting: line and block comments, strings, `$MACRO$`
+  DolDoc markup, `#` directives, numbers, keywords, types, call sites
+- Renders as plain text above 220 kB rather than locking up the tab
+- Line classification reuses `scripts/analyze-source.mjs`, so an explorer's
+  numbers can never drift from the Autopsy page
 
 ## The music is a real port, not an impression
 
@@ -65,8 +109,13 @@ That runs three scripts in order:
 | `scripts/analyze-source.mjs` | Walks the checkout, classifies every line as code / comment / blank, reads `git log` |
 | `scripts/extract-assets.mjs` | Pulls `sys_font_std[]`, the `Play()` song strings and lyrics, and the palette |
 | `scripts/regen.mjs` | Writes the typed modules in `src/generated/` |
+| `scripts/build-explorer.mjs` | Copies the trimmed tree to `public/templeos/` and writes `public/templeos-index.json` |
 
 Override paths with `TEMPLEOS_SRC`, `TEMPLEOS_OUT`, `TEMPLEOS_ASSETS`.
+
+`public/templeos/` and `public/templeos-index.json` are committed, so the site
+builds without cloning anything. Re-run `npm run data` only if you want to
+re-measure against a newer checkout.
 
 ### Two files are deliberately excluded
 
@@ -79,16 +128,19 @@ the headline number. They are reported separately on the page instead.
 
 ```bash
 npm install
-npm run dev        # vite dev server
-npm run typecheck  # tsc --noEmit
-npm test           # music-parser assertions
-npm run build      # typecheck + production build into dist/
-npm run test:smoke # build, then render dist/ in jsdom and assert on the DOM
+npm run dev         # vite dev server
+npm run typecheck   # tsc --noEmit
+npm test            # music-parser assertions (16 checks)
+npm run build       # typecheck + production build into dist/
+npm run test:smoke    # render dist/index.html in jsdom and assert on the DOM
+npm run test:explorer # same, for the explorer: tree, routing, highlighting
+npm run test:all      # all of the above
 ```
 
 No runtime dependencies. Charts are hand-rolled SVG; audio is Web Audio; the
-font is drawn on a canvas. The whole production bundle is about 30 kB of JS and
-12 kB of CSS.
+font is drawn on a canvas; HolyC highlighting is ~100 lines of regex. The whole
+production bundle is about 38 kB of JS and 19 kB of CSS, plus the 3.4 MB of
+source the explorer serves on demand.
 
 ## Credits
 

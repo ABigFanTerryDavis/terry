@@ -1,0 +1,12 @@
+# Our own files: normalise to LF in the repo, LF in the working tree.
+* text=auto eol=lf
+
+# The vendored TempleOS source is an archive, not our code. The explorer
+# records exact byte counts per file, so line endings must not be rewritten
+# on checkout -- that would desync the index from what is served.
+public/templeos/** -text
+public/templeos-index.json -text
+
+*.png binary
+*.jpg binary
+*.gr binary
