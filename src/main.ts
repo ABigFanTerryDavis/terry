@@ -1,7 +1,7 @@
 import './style.css';
 
-import { byDir, commits, excludedDataFiles, topFiles, totals } from './generated/metrics';
-import { songs as songData } from './generated/songs';
+import { byDir, commits, excludedDataFiles, topFiles, totals, sourceInfo } from './generated/metrics';
+import { songs as songData, arcadeSongs } from './generated/songs';
 import { palette } from './generated/palette';
 import { treemapChart, barChart, columnChart, legend, stackBar, type Column } from './charts';
 import { mountText } from './glyphs';
@@ -61,7 +61,7 @@ function buildTiles(): void {
     { value: fmt(totals.sourceFiles), label: 'Source files', note: 'HolyC, assembly, and boot sources.' },
     { value: fmt(totals.lines), label: 'Lines in total', note: 'Including comments and blank lines.' },
     { value: fmt(terryCommits), label: 'Commits by him', note: 'Across eleven years, in one repository.' },
-    { value: '19.1', label: 'Years, full time', note: 'His own words in ::/Doc/Credits.DD.' },
+    { value: '13.9', label: 'Years, full time', note: 'His own words in ::/Doc/Credits.DD.' },
     { value: '0', label: 'Lines borrowed', note: 'Save the handful he credited — all of them listed.' },
   ];
   const host = $('#tiles');
@@ -182,6 +182,41 @@ function buildAutopsy(): void {
     color: ACCENTS[i % ACCENTS.length]!,
   }));
   $('#chart-commits').replaceChildren(columnChart(cols));
+
+  // every release commit, newest first
+  const ctable = $<HTMLTableElement>('#table-commits');
+  const ccap = document.createElement('caption');
+  ccap.textContent = `${commits.total} release commits, newest first`;
+  const cthead = document.createElement('thead');
+  const chr = document.createElement('tr');
+  for (const h of ['Date', 'Subject', 'By']) {
+    const th = document.createElement('th');
+    th.textContent = h;
+    chr.appendChild(th);
+  }
+  cthead.appendChild(chr);
+  const ctbody = document.createElement('tbody');
+  for (const c of [...commits.list].reverse()) {
+    const tr = document.createElement('tr');
+    const tdDate = document.createElement('td');
+    tdDate.textContent = c.date;
+    const tdSub = document.createElement('td');
+    tdSub.className = 'path';
+    tdSub.textContent = c.subject || '(no message)';
+    tdSub.style.whiteSpace = 'normal';
+    const tdBy = document.createElement('td');
+    tdBy.textContent = c.author === 'Terry A. Davis' ? 'Terry' : c.author;
+    tr.append(tdDate, tdSub, tdBy);
+    ctbody.appendChild(tr);
+  }
+  ctable.replaceChildren(ccap, cthead, ctbody);
+
+  const prov = $('#provenance');
+  if (sourceInfo.headShort) {
+    prov.textContent =
+      `Measured against cia-foundation/TempleOS at ${sourceInfo.headShort}, ` +
+      `generated ${sourceInfo.generated.slice(0, 10)}.`;
+  }
 
   // top files
   const top = topFiles.slice(0, 20);
@@ -333,7 +368,19 @@ function buildSongs(): void {
 
   const nodes: HTMLElement[] = [];
 
-  for (const song of songData) {
+  const groups: { heading: string | null; list: typeof songData }[] = [
+    { heading: null, list: songData },
+    { heading: 'Game and demo themes — no lyrics, same speaker', list: arcadeSongs },
+  ];
+
+  for (const { heading, list } of groups) {
+    if (heading && list.length > 0) {
+      const h = document.createElement('h3');
+      h.className = 'song-group';
+      h.textContent = heading;
+      nodes.push(h);
+    }
+    for (const song of list) {
     const parsed = parseSong(song);
     const el = document.createElement('article');
     el.className = 'song';
@@ -414,6 +461,7 @@ function buildSongs(): void {
       button.classList.add('playing');
       view.raf = requestAnimationFrame(() => tick(song.id));
     });
+    }
   }
 
   host.replaceChildren(...nodes);
@@ -469,7 +517,7 @@ const TIMELINE: [string, string][] = [
   ['1992', 'B.Sc. in computer engineering from <strong>Arizona State</strong>.'],
   ['1994', 'M.Sc. in electrical engineering, same university. By now the operating system has begun.'],
   ['1990s', 'It is called the <strong>J Operating System</strong>, then <strong>LoseThos</strong>, then <strong>SparrowOS</strong>.'],
-  ['1996', 'Starts working on it full time, and does not substantially stop for nineteen years.'],
+  ['1996', 'Starts working on it full time, and does not substantially stop for over a decade.'],
   ['2005', 'Public release. <strong>LoseThos</strong> is already an operating system with a compiler in it.'],
   ['2013', 'Renamed <strong>TempleOS</strong>. God is a compiler, he says, and this is the third temple.'],
   ['2016', 'Hires an artist, Cody Rigby, for $3,000 of pixel art. He lists the credit in his own files.'],

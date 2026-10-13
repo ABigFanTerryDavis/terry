@@ -33,18 +33,31 @@ export const topFiles: FileRow[] = ${JSON.stringify(
 
 export interface DataFile { path: string; lines: number; }
 
+export interface CommitRow { short: string; date: string; author: string; subject: string; }
+
 export const commits: {
   total: number;
   byAuthor: Record<string, number>;
   firstDate: string;
   lastDate: string;
   byYear: Record<string, number>;
+  list: CommitRow[];
 } = {
   total: ${d.commits},
   byAuthor: ${JSON.stringify(d.gitAuthors)},
   firstDate: "${(d.firstCommit && d.firstCommit.date) || ''}",
   lastDate: "${d.lastCommit ? d.lastCommit.date : ''}",
   byYear: ${JSON.stringify(d.perYear)},
+  list: ${JSON.stringify(d.commitList || [])},
+};
+
+export interface SourceInfo { repo: string; head: string | null; headShort: string | null; generated: string; }
+
+export const sourceInfo: SourceInfo = {
+  repo: ${(d.source && JSON.stringify(d.source.repo)) || '"https://github.com/cia-foundation/TempleOS"'},
+  head: ${(d.source && JSON.stringify(d.source.head)) || 'null'},
+  headShort: ${(d.source && JSON.stringify(d.source.headShort)) || 'null'},
+  generated: ${JSON.stringify(d.generated || '')},
 };
 
 export const excludedDataFiles: DataFile[] = ${JSON.stringify(d.dataFiles)};
@@ -67,20 +80,24 @@ function cleanWords(w) {
     .replace(/\n{2,}/g, '\n')
     .trim();
 }
-const songs = a.songs.map((s) => ({
+const cleanSong = (s) => ({
   id: s.id,
   title: s.title,
   file: s.file,
   blurb: s.blurb,
   tempo: s.tempo,
   lines: s.calls.map((c) => ({ notes: c.notes, words: cleanWords(c.words) })),
-}));
+});
+const songs = a.songs.map(cleanSong);
+const arcadeSongs = (a.arcadeSongs || []).map(cleanSong);
 
 const songsTs = `${hdr}// Songs are the real Play() calls found in the TempleOS tree.
 export interface SongLine { notes: string; words: string; }
 export interface Song { id: string; title: string; file: string; blurb: string; tempo: number; lines: SongLine[]; }
 
 export const songs: Song[] = ${JSON.stringify(songs, null, 2)};
+
+export const arcadeSongs: Song[] = ${JSON.stringify(arcadeSongs, null, 2)};
 
 // Musical grammar, taken verbatim from ::/Adam/ASnd.HC
 // Play(): 'w'=4 'h'=2 'q'=1 'e'=0.5 's'=0.25 quarter-notes, 't'=*2/3, '.'=*1.5,

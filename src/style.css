@@ -1286,14 +1286,88 @@ input[type="checkbox"] {
   color: var(--ink-faint);
   line-height: 1.5;
 }
-. g o d - f o r m   {   d i s p l a y :   f l e x ;   f l e x - w r a p :   w r a p ;   g a p :   0 . 8 r e m   1 . 7 5 r e m ;   p a d d i n g :   1 r e m   1 . 3 5 r e m ;   b a c k g r o u n d :   v a r ( - - b g - r a i s e d ) ;   b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e - s o f t ) ;   m a r g i n - b o t t o m :   2 r e m ;   a l i g n - i t e m s :   c e n t e r ;   } 
- . g o d - f o r m   l a b e l   {   f o n t - f a m i l y :   v a r ( - - m o n o ) ;   f o n t - s i z e :   0 . 7 2 r e m ;   t e x t - t r a n s f o r m :   u p p e r c a s e ;   l e t t e r - s p a c i n g :   0 . 1 e m ;   c o l o r :   v a r ( - - i n k - f a i n t ) ;   } 
- . g o d - f o r m   i n p u t ,   . g o d - f o r m   s e l e c t   {   f o n t - f a m i l y :   v a r ( - - m o n o ) ;   f o n t - s i z e :   0 . 8 2 r e m ;   b a c k g r o u n d :   v a r ( - - b g ) ;   b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ;   c o l o r :   v a r ( - - i n k ) ;   p a d d i n g :   0 . 3 5 r e m   0 . 6 r e m ;   } 
- . g o d - f o r m   i n p u t : f o c u s ,   . g o d - f o r m   s e l e c t : f o c u s   {   o u t l i n e :   n o n e ;   b o r d e r - c o l o r :   v a r ( - - a c c e n t - 4 ) ;   } 
- . g o d - r o w   {   d i s p l a y :   f l e x ;   a l i g n - i t e m s :   c e n t e r ;   g a p :   0 . 7 5 r e m ;   } 
- . g o d - v a l   {   c o l o r :   v a r ( - - a c c e n t - 4 ) ;   f o n t - w e i g h t :   6 0 0 ;   m i n - w i d t h :   2 r e m ;   t e x t - a l i g n :   r i g h t ;   } 
- . g o d - r e s u l t   {   m a r g i n - t o p :   0 . 8 5 r e m ;   } 
- . g o d - r e s u l t   p r e   {   f o n t - s i z e :   0 . 8 r e m ;   } 
- . g o d - r e s u l t   b u t t o n   {   m a r g i n - t o p :   0 . 6 r e m ;   } 
-  
- 
+
+.god-form { display: flex; flex-wrap: wrap; gap: 0.8rem 1.75rem; padding: 1rem 1.35rem; background: var(--bg-raised); border: 1px solid var(--line-soft); margin-bottom: 2rem; align-items: center; }
+.god-form label { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint); }
+.god-form input, .god-form select { font-family: var(--mono); font-size: 0.82rem; background: var(--bg); border: 1px solid var(--line); color: var(--ink); padding: 0.35rem 0.6rem; }
+.god-form input:focus, .god-form select:focus { outline: none; border-color: var(--accent-4); }
+.god-row { display: flex; align-items: center; gap: 0.75rem; }
+.god-val { color: var(--accent-4); font-weight: 600; min-width: 2rem; text-align: right; }
+.god-result { margin-top: 0.85rem; }
+.god-result pre { font-size: 0.8rem; }
+.god-result button { margin-top: 0.6rem; }
+.song-group {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-4);
+  margin: 1.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-soft);
+}
+.song-group:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.doc {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+  padding: 1.25rem 1.4rem;
+  max-width: 72ch;
+  overflow-x: auto;
+}
+.doc p {
+  margin: 0 0 0.9rem;
+}
+.doc a.doc-link {
+  color: var(--accent-2);
+}
+.doc .doc-btn {
+  border: 1px solid var(--line);
+  padding: 0 0.4em;
+  white-space: nowrap;
+}
+.doc .doc-graphic {
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+.viewer-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
+}
+.viewer-actions .btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.68rem;
+}
+.mode-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+}
+.mode-toggle .btn {
+  border: none;
+  border-radius: 0;
+}
+.mode-toggle .btn.active {
+  background: var(--bg-inset);
+  color: var(--accent-4);
+}
+.search-meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  padding: 0.4rem 0.9rem;
+  margin: 0;
+}
+mark.hit {
+  background: rgba(255, 255, 85, 0.22);
+  color: inherit;
+}

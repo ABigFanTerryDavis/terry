@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "esbuild src/music.ts --bundle --format=esm --outfile=.cache/music.bundle.mjs --log-level=warning && node test/music.test.mjs",
+    "test:doldoc": "esbuild src/doldoc.ts --bundle --format=esm --outfile=.cache/doldoc.bundle.mjs --log-level=warning && node test/doldoc.test.mjs",
     "test:smoke": "npm run build && node test/smoke.test.mjs",
     "test:explorer": "npm run build && node test/explorer.test.mjs",
     "test:all": "npm run typecheck && npm test && npm run build && node test/smoke.test.mjs && node test/explorer.test.mjs",

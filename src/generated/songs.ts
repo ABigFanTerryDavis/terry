@@ -172,6 +172,197 @@ export const songs: Song[] = [
   }
 ];
 
+export const arcadeSongs: Song[] = [
+  {
+    "id": "squirt",
+    "title": "Squirt",
+    "file": "Demo/Games/Squirt.HC",
+    "blurb": "Title music for Squirt, one of his arcade demos.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "5sDCDC4qA5DetDFFeDG4etA5EF4qG5eFC",
+        "words": ""
+      },
+      {
+        "notes": "5sDCDC4qA5DetDFFeDG4etA5EF4qG5eFC",
+        "words": ""
+      },
+      {
+        "notes": "5DCsG4A5G4AqBeBA5qEE4B5eC4B",
+        "words": ""
+      },
+      {
+        "notes": "5DCsG4A5G4AqBeBA5qEE4B5eC4B",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "elephant",
+    "title": "Elephant",
+    "file": "Demo/Graphics/Elephant.HC",
+    "blurb": "Music from a graphics demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "4qG5eCGqE4A5FCeDF4qB",
+        "words": ""
+      },
+      {
+        "notes": "4G5eCGqE4A5FCeDF4qB",
+        "words": ""
+      },
+      {
+        "notes": "4B5DeF4G5etE4BAqBAetA5EDeE4G",
+        "words": ""
+      },
+      {
+        "notes": "4qB5DeF4G5etE4BAqBAetA5EDeE4G",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "zoneout",
+    "title": "ZoneOut",
+    "file": "Demo/Games/ZoneOut.HC",
+    "blurb": "Music from the ZoneOut demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "5sD4B5D4B5qEsG4B5G4B5eD4GsB5F4B5FeD4A5qFG",
+        "words": ""
+      },
+      {
+        "notes": "5sD4B5D4B5qEsG4B5G4B5eD4GsB5F4B5FeD4A5qFG",
+        "words": ""
+      },
+      {
+        "notes": "5eGDsFGFGqDE4eB5E4sG5D4G5DqF4sGAGA",
+        "words": ""
+      },
+      {
+        "notes": "5eGDsFGFGqDE4eB5E4sG5D4G5DqF4sGAGA",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "talons",
+    "title": "Talons",
+    "file": "Demo/Games/Talons.HC",
+    "blurb": "Music from the Talons demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "5eCGFsD4A5e.C4sG5eGDqCDeGsGG4qG",
+        "words": ""
+      },
+      {
+        "notes": "5eCGFsD4A5e.C4sG5eGDqCDeGsGG4qG",
+        "words": ""
+      },
+      {
+        "notes": "5eGECGC4A5FCsC4B5C4B5e.GsG4qGB",
+        "words": ""
+      },
+      {
+        "notes": "5eGECGC4A5FCsC4B5C4B5e.GsG4qGB",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "rawhide",
+    "title": "RawHide",
+    "file": "Demo/Games/RawHide.HC",
+    "blurb": "Music from the RawHide demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "5qC4etG5DC4B5DCECFqFC4sA5D4A5D4qB",
+        "words": ""
+      },
+      {
+        "notes": "5C4etG5DC4B5DCECFqFC4sA5D4A5D4qB",
+        "words": ""
+      },
+      {
+        "notes": "4sGAGA5qG4etG5GD4eBBqB5F4eBA5qE",
+        "words": ""
+      },
+      {
+        "notes": "4sGAGA5qG4etG5GD4eBBqB5F4eBA5qE",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "wenceslas",
+    "title": "Wenceslas",
+    "file": "Demo/Games/Wenceslas.HC",
+    "blurb": "Music from the Wenceslas demo.",
+    "tempo": 2.48,
+    "lines": [
+      {
+        "notes": "5eCCCDCC4qGeAGAB5qCC",
+        "words": ""
+      },
+      {
+        "notes": "5eCCCDCC4qGeAGAB5qCC",
+        "words": ""
+      },
+      {
+        "notes": "5eGFEDEDqC4eAGAB5qCC",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "flapbat",
+    "title": "FlapBat",
+    "file": "Demo/Games/FlapBat.HC",
+    "blurb": "Music from the FlapBat demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "4eB5E4B5C4B5EsEFqE4eB5E4B5C4B5EsEF",
+        "words": ""
+      },
+      {
+        "notes": "5qE4eA5D4ABA5DsDCqD4eB5E4B5C4B",
+        "words": ""
+      },
+      {
+        "notes": "5EsEDqE",
+        "words": ""
+      }
+    ]
+  },
+  {
+    "id": "castle",
+    "title": "Castle Frankenstein",
+    "file": "Demo/Games/CastleFrankenstein.HC",
+    "blurb": "Music from Castle Frankenstein, his 594-line first-person demo.",
+    "tempo": 2.5,
+    "lines": [
+      {
+        "notes": "3q.A#eGAeA#qAq.A#eGeAeA#qA",
+        "words": ""
+      },
+      {
+        "notes": "3q.A#eGA#AqGq.A#eGA#AqG",
+        "words": ""
+      },
+      {
+        "notes": "4eA#AqGeA#AqGeA#AGAA#AqG",
+        "words": ""
+      }
+    ]
+  }
+];
+
 // Musical grammar, taken verbatim from ::/Adam/ASnd.HC
 // Play(): 'w'=4 'h'=2 'q'=1 'e'=0.5 's'=0.25 quarter-notes, 't'=*2/3, '.'=*1.5,
 // '('=tie, 'R'=rest, digits 1-7 set octave (mid C is octave 4).

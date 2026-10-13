@@ -32,10 +32,10 @@
             <input
               id="search"
               type="search"
-              placeholder="filter by path  ( / )"
+              placeholder="filter by path · text:word searches contents  ( / )"
               autocomplete="off"
               spellcheck="false"
-              aria-label="Filter files by path"
+              aria-label="Filter files by path, or prefix with text: to search contents"
             />
             <button id="clear" class="clear" type="button" aria-label="Clear filter" hidden>&times;</button>
           </div>
@@ -49,6 +49,14 @@
         <div class="viewer-head">
           <p class="crumbs" id="crumbs"></p>
           <div class="badges" id="badges"></div>
+          <div class="viewer-actions" id="viewer-actions" hidden>
+            <div class="mode-toggle" id="mode-toggle" hidden>
+              <button type="button" class="btn active" id="mode-source">Source</button>
+              <button type="button" class="btn" id="mode-reading">Reading</button>
+            </div>
+            <button type="button" class="btn" id="copy-link">Copy link</button>
+            <button type="button" class="btn" id="copy-file">Copy text</button>
+          </div>
         </div>
         <div class="notice" id="notice" hidden></div>
         <div class="code-wrap" id="code-wrap">
@@ -68,6 +76,7 @@
           </div>
           <div class="code-scroll" id="code-scroll" hidden>
             <pre class="code" id="code"></pre>
+            <div class="doc" id="doc" hidden></div>
           </div>
         </div>
         <p class="viewer-foot" id="viewer-foot"></p>

@@ -101,10 +101,30 @@ const songs = [
   },
 ];
 
+const arcadeDefs = [
+  ['squirt', 'Squirt', 'Demo/Games/Squirt.HC', 'Title music for Squirt, one of his arcade demos.'],
+  ['elephant', 'Elephant', 'Demo/Graphics/Elephant.HC', 'Music from a graphics demo.'],
+  ['zoneout', 'ZoneOut', 'Demo/Games/ZoneOut.HC', 'Music from the ZoneOut demo.'],
+  ['talons', 'Talons', 'Demo/Games/Talons.HC', 'Music from the Talons demo.'],
+  ['rawhide', 'RawHide', 'Demo/Games/RawHide.HC', 'Music from the RawHide demo.'],
+  ['wenceslas', 'Wenceslas', 'Demo/Games/Wenceslas.HC', 'Music from the Wenceslas demo.'],
+  ['flapbat', 'FlapBat', 'Demo/Games/FlapBat.HC', 'Music from the FlapBat demo.'],
+  ['castle', 'Castle Frankenstein', 'Demo/Games/CastleFrankenstein.HC', 'Music from Castle Frankenstein, his 594-line first-person demo.'],
+];
+
+const arcadeSongs = arcadeDefs.map(([id, title, file, blurb]) => ({
+  id,
+  title,
+  file,
+  blurb,
+  ...parseSongs(file),
+}));
+
 const out = {
   glyphs,
   palette,
   songs,
+  arcadeSongs,
   fontSource: 'Kernel/FontStd.HC',
   noteMap: { A: 8, B: 9, C: 3, D: 4, E: 5, F: 6, G: 7 },
   onaFormula: '440/32 * 2^(ona/12)',

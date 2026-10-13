@@ -1,5 +1,6 @@
 import './style.css';
 import { highlightHolyC } from './highlight';
+import { renderDolDoc } from './doldoc';
 
 interface FileEntry {
   path: string;
@@ -17,6 +18,7 @@ interface FileEntry {
 
 interface Index {
   generated: string;
+  source?: { repo: string; head: string | null; headShort: string | null } | string;
   totals: {
     files: number;
     sourceBytes: number;
@@ -25,6 +27,11 @@ interface Index {
     trimmedBytes: number;
   };
   files: FileEntry[];
+}
+
+interface SearchIndex {
+  tokens: string[];
+  postings: number[][];
 }
 
 interface TreeNode {
@@ -53,15 +60,27 @@ const state: {
   open: Set<string>;
   filter: string;
   current: string | null;
+  currentText: string;
+  currentLine: number | null;
+  docMode: 'source' | 'reading';
   /** flattened, filtered file list, for j/k navigation */
   visible: FileEntry[];
+  search: SearchIndex | null;
+  searchLoading: boolean;
+  searchResults: { file: FileEntry; score: number }[] | null;
 } = {
   index: null,
   tree: null,
   open: new Set(),
   filter: '',
   current: null,
+  currentText: '',
+  currentLine: null,
+  docMode: 'reading',
   visible: [],
+  search: null,
+  searchLoading: false,
+  searchResults: null,
 };
 
 const mb = (n: number) => `${(n / 1048576).toFixed(2)} MB`;
@@ -202,6 +221,15 @@ function renderTree(): void {
     // flat, filtered result list
     const list = document.createElement('div');
     list.className = 't-children';
+    if (state.searchResults) {
+      const meta = document.createElement('p');
+      meta.className = 'search-meta';
+      meta.textContent =
+        state.searchResults.length === 0
+          ? `no file contains “${state.filter.slice(5).trim()}”`
+          : `${nf(state.searchResults.length)} file${state.searchResults.length === 1 ? '' : 's'} contain “${state.filter.slice(5).trim()}”`;
+      list.appendChild(meta);
+    }
     for (const f of state.visible.slice(0, 400)) {
       const row = document.createElement('div');
       row.className = 't-row';
@@ -228,6 +256,60 @@ function markCurrent(): void {
   for (const el of document.querySelectorAll('.t-file')) {
     el.classList.toggle('current', (el as HTMLElement).dataset.path === state.current);
   }
+}
+
+/* ------------------------------------------------------------ full-text */
+
+const SEARCH_URL = new URL('templeos-search.json', document.baseURI).href;
+
+function tokenize(q: string): string[] {
+  return q.toLowerCase().match(/[a-z0-9_]{3,24}/g) ?? [];
+}
+
+async function loadSearchIndex(): Promise<SearchIndex | null> {
+  if (state.search) return state.search;
+  if (state.searchLoading) return null;
+  state.searchLoading = true;
+  try {
+    const res = await fetch(SEARCH_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    state.search = (await res.json()) as SearchIndex;
+    return state.search;
+  } catch {
+    return null;
+  } finally {
+    state.searchLoading = false;
+  }
+}
+
+/** AND-search over the token index; rarer tokens score higher. */
+function contentSearch(idx: SearchIndex, query: string): { file: FileEntry; score: number }[] {
+  const toks = [...new Set(tokenize(query))];
+  if (!toks.length || !state.index) return [];
+  const lists: number[][] = [];
+  for (const t of toks) {
+    const at = idx.tokens.indexOf(t);
+    if (at === -1) return [];
+    lists.push(idx.postings[at] ?? []);
+  }
+  lists.sort((a, b) => a.length - b.length);
+  let hits = new Set(lists[0]);
+  for (const l of lists.slice(1)) {
+    const next = new Set<number>();
+    for (const i of l) if (hits.has(i)) next.add(i);
+    hits = next;
+    if (!hits.size) break;
+  }
+  const out: { file: FileEntry; score: number }[] = [];
+  for (const i of hits) {
+    const file = state.index.files[i];
+    if (!file) continue;
+    let score = 0;
+    for (const l of lists) score += 1 / Math.max(1, l.length);
+    out.push({ file, score });
+  }
+  out.sort((a, b) => b.score - a.score || a.file.path.localeCompare(b.file.path, 'en'));
+  return out.slice(0, 200);
 }
 
 /* ----------------------------------------------------------------- viewer */
@@ -308,6 +390,7 @@ async function open(path: string, line?: number): Promise<void> {
 
   const pre = $('#code');
   pre.textContent = 'loading…';
+  $('#doc').hidden = true;
 
   let text: string;
   try {
@@ -318,7 +401,29 @@ async function open(path: string, line?: number): Promise<void> {
     pre.textContent = `Could not load ${path}\n\n${String(err)}`;
     return;
   }
+  state.currentText = text;
+  state.currentLine = line ?? null;
 
+  // Docs open in reading mode unless the reader asked for source.
+  if (entry.kind === 'doc' && state.docMode === 'reading') renderDoc(text);
+  else renderSource(text);
+  updateModeToggle(entry);
+  $('#viewer-actions').hidden = false;
+  scroll.scrollTop = 0;
+
+  const foot = $('#viewer-foot');
+  foot.textContent =
+    `${path} — ${nf(entry.lines)} lines, ${nf(entry.bytes)} bytes` +
+    (entry.trimmed ? ` (${nf(entry.trimmed)} binary bytes trimmed)` : '');
+
+  if (line != null) scrollToLine(line);
+}
+
+function renderSource(text: string): void {
+  const pre = $('#code');
+  const doc = $('#doc');
+  doc.hidden = true;
+  pre.hidden = false;
   if (text.length > HIGHLIGHT_LIMIT) {
     pre.textContent = text;
   } else {
@@ -329,14 +434,62 @@ async function open(path: string, line?: number): Promise<void> {
       .map((l, i) => `<span class="l" data-n="${i + 1}">${highlightHolyC(l) || ' '}</span>`)
       .join('');
   }
-  scroll.scrollTop = 0;
+}
 
-  const foot = $('#viewer-foot');
-  foot.textContent =
-    `${path} — ${nf(entry.lines)} lines, ${nf(entry.bytes)} bytes` +
-    (entry.trimmed ? ` (${nf(entry.trimmed)} binary bytes trimmed)` : '');
+function renderDoc(text: string): void {
+  const pre = $('#code');
+  const doc = $('#doc');
+  pre.hidden = true;
+  doc.hidden = false;
+  doc.innerHTML = renderDolDoc(text);
+}
 
-  if (line != null) scrollToLine(line);
+function updateModeToggle(entry: FileEntry): void {
+  const toggle = $('#mode-toggle');
+  const isDoc = entry.kind === 'doc';
+  toggle.hidden = !isDoc;
+  $('#mode-source').classList.toggle('active', !isDoc || state.docMode === 'source');
+  $('#mode-reading').classList.toggle('active', isDoc && state.docMode === 'reading');
+}
+
+function setDocMode(mode: 'source' | 'reading'): void {
+  state.docMode = mode;
+  if (!state.index || !state.current) return;
+  const entry = state.index.files.find((f) => f.path === state.current);
+  if (!entry) return;
+  if (entry.kind === 'doc' && mode === 'reading') renderDoc(state.currentText);
+  else renderSource(state.currentText);
+  updateModeToggle(entry);
+}
+
+async function copyText(text: string, btn: HTMLButtonElement): Promise<void> {
+  const done = () => {
+    const prev = btn.textContent;
+    btn.textContent = 'Copied';
+    window.setTimeout(() => {
+      btn.textContent = prev;
+    }, 1200);
+  };
+  try {
+    await navigator.clipboard.writeText(text);
+    done();
+    return;
+  } catch {
+    /* fall through to the legacy path */
+  }
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    done();
+  } catch {
+    /* clipboard unavailable */
+  }
+  ta.remove();
 }
 
 function scrollToLine(n: number): void {
@@ -406,10 +559,12 @@ async function boot(): Promise<void> {
 
   $('#rail-stats').textContent =
     `${nf(index.totals.files)} files · ${mb(index.totals.readableBytes)} readable`;
+  const src = typeof index.source === 'string' ? null : index.source;
   $('#rail-foot').textContent =
     `${nf(index.totals.trimmedFiles)} files had binary tails trimmed — ` +
     `${mb(index.totals.trimmedBytes)} of embedded sprite and sound data. ` +
-    `TempleOS is public domain.`;
+    `TempleOS is public domain.` +
+    (src?.headShort ? ` Index built from ${src.headShort}, ${index.generated.slice(0, 10)}.` : '');
 
   // start with the top-level directories open
   for (const c of state.tree.children.keys()) state.open.add(c);
@@ -423,12 +578,34 @@ async function boot(): Promise<void> {
     if (h && h.path !== state.current) void open(h.path, h.line);
   });
 
-  // search
+  // search: plain text filters paths; `text:` searches file contents
   const search = $<HTMLInputElement>('#search');
   const clear = $<HTMLButtonElement>('#clear');
   const apply = () => {
     state.filter = search.value.trim().toLowerCase();
     clear.hidden = !state.filter;
+    if (state.filter.startsWith('text:')) {
+      state.searchResults = [];
+      state.visible = [];
+      renderTree();
+      void (async () => {
+        const idx = await loadSearchIndex();
+        const q = search.value.trim();
+        // the user may have typed on while the index loaded
+        if (q.trim().toLowerCase() !== state.filter) return;
+        if (!idx) {
+          state.searchResults = null;
+          state.visible = [];
+        } else {
+          const hits = contentSearch(idx, q.slice(5));
+          state.searchResults = hits;
+          state.visible = hits.map((h) => h.file);
+        }
+        renderTree();
+      })();
+      return;
+    }
+    state.searchResults = null;
     state.visible = collectVisible(state.tree!, state.filter);
     renderTree();
   };
@@ -437,6 +614,27 @@ async function boot(): Promise<void> {
     search.value = '';
     apply();
     search.focus();
+  });
+
+  // viewer actions: reading/source toggle, copy link, copy text
+  $('#mode-source').addEventListener('click', () => setDocMode('source'));
+  $('#mode-reading').addEventListener('click', () => setDocMode('reading'));
+  $('#copy-link').addEventListener('click', (e) => {
+    void copyText(location.href, e.currentTarget as HTMLButtonElement);
+  });
+  $('#copy-file').addEventListener('click', (e) => {
+    if (state.currentText) void copyText(state.currentText, e.currentTarget as HTMLButtonElement);
+  });
+
+  // clicking a source line deep-links to it
+  $('#code').addEventListener('click', (e) => {
+    const line = (e.target as HTMLElement).closest('.l') as HTMLElement | null;
+    if (!line?.dataset.n || !state.current) return;
+    const n = Number(line.dataset.n);
+    state.currentLine = n;
+    const hash = `#/${state.current}:${n}`;
+    if (location.hash !== hash) location.hash = hash;
+    scrollToLine(n);
   });
 
   // suggested files on the empty state

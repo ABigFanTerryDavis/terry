@@ -10,6 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const SRC = path.resolve(process.env.TEMPLEOS_SRC ?? path.join(ROOT, '.templeos/TempleOS'));
@@ -162,9 +163,49 @@ for (const abs of walk(SRC)) {
 
 files.sort((a, b) => a.path.localeCompare(b.path, 'en'));
 
+// ---------- full-text search index ----------
+// Inverted index over the readable text: tokens (>=3 chars) to sorted file
+// positions in the files array above. Compact enough (~0.6 MB) to fetch once
+// and search entirely client-side. Paths are tokenized too, so `text:lex`
+// finds Compiler/Lex.HC even if the body never says "lex".
+let sourceHead = null;
+try {
+  sourceHead = execSync(`git -C "${SRC}" rev-parse HEAD`, { encoding: 'utf8' }).trim();
+} catch {
+  sourceHead = null;
+}
+
+const SEARCH_INDEX = path.join(ROOT, 'public/templeos-search.json');
+const tokenPostings = new Map();
+files.forEach((f, idx) => {
+  let text = '';
+  try {
+    text = fs.readFileSync(path.join(OUT_DIR, f.path), 'utf8').toLowerCase();
+  } catch {
+    text = '';
+  }
+  const haystack = `${f.path.toLowerCase()}\n${text}`;
+  const toks = new Set((haystack.match(/[a-z0-9_]{3,24}/g) || []).slice(0, 4000));
+  for (const t of toks) {
+    let s = tokenPostings.get(t);
+    if (!s) {
+      s = [];
+      tokenPostings.set(t, s);
+    }
+    s.push(idx);
+  }
+});
+const searchTokens = [...tokenPostings.keys()].sort();
+const searchPostings = searchTokens.map((t) => tokenPostings.get(t));
+fs.writeFileSync(SEARCH_INDEX, JSON.stringify({ tokens: searchTokens, postings: searchPostings }), 'utf8');
+
 const index = {
   generated: new Date().toISOString(),
-  source: 'https://github.com/cia-foundation/TempleOS',
+  source: {
+    repo: 'https://github.com/cia-foundation/TempleOS',
+    head: sourceHead,
+    headShort: sourceHead ? sourceHead.slice(0, 7) : null,
+  },
   totals: {
     files: files.length,
     sourceBytes: totalBytes,
@@ -183,3 +224,5 @@ console.log(`  source bytes      ${totalBytes.toLocaleString()} (${(totalBytes /
 console.log(`  readable bytes    ${readableBytes.toLocaleString()} (${(readableBytes / 1048576).toFixed(2)} MB)`);
 console.log(`  trimmed ${trimmedFiles} files, ${trimmedBytes.toLocaleString()} bytes (${pct}%)`);
 console.log(`  index             ${INDEX} (${(fs.statSync(INDEX).size / 1024).toFixed(1)} kB)`);
+console.log(`  search index      ${SEARCH_INDEX} (${(fs.statSync(SEARCH_INDEX).size / 1024).toFixed(1)} kB, ${searchTokens.length.toLocaleString()} tokens)`);
+if (sourceHead) console.log(`  source HEAD       ${sourceHead.slice(0, 7)}`);

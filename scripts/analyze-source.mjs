@@ -127,15 +127,17 @@ const kernelText = files
 
 // ---------- git history: real growth over time ----------
 let commits = [];
+let sourceHead = null;
 try {
   const raw = execSync(
-    `git -C "${ROOT}" log --format="%H|%ad|%an|%s" --date=short`,
+    `git -C "${ROOT}" log --format="%H%x1f%h%x1f%ad%x1f%an%x1f%s" --date=short`,
     { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }
   );
-  commits = raw.trim().split('\n').map((l) => {
-    const [hash, date, ...rest] = l.split('|');
-    return { hash, date, author: rest[0] || '', subject: rest.slice(1).join('|') };
+  commits = raw.trim().split('\n').filter(Boolean).map((l) => {
+    const [hash, short, date, author, ...rest] = l.split('\x1f');
+    return { hash, short, date, author: author || '', subject: rest.join('\x1f') };
   }).sort((a, b) => a.date.localeCompare(b.date));
+  sourceHead = execSync(`git -C "${ROOT}" rev-parse HEAD`, { encoding: 'utf8' }).trim();
 } catch (e) {
   console.error('git log failed', e.message);
 }
@@ -171,6 +173,12 @@ const data = {
   perYear,
   firstCommit: commits[0] || null,
   lastCommit: commits[commits.length - 1] || null,
+  commitList: commits.map((c) => ({ short: c.short, date: c.date, author: c.author, subject: c.subject })),
+  source: {
+    repo: 'https://github.com/cia-foundation/TempleOS',
+    head: sourceHead,
+    headShort: sourceHead ? sourceHead.slice(0, 7) : null,
+  },
   docFileCount: docFiles.length,
 };
 

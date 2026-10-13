@@ -14,10 +14,10 @@ replayed from the `Play()` notation strings in his code.
 
 | Section | What it does |
 | --- | --- |
-| **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year; a treemap of the whole tree. Real charts, real numbers, and the directory/file charts link into the Explorer. |
-| **Listen** | Five of his compositions, including “Risen” (`TOSTheme.HC`), played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. It also includes a GodSong panel: his hymn-generation tables with a browser PRNG standing in for compiled-only `GodBits`. |
+| **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year plus all 49 release commits; a treemap of the whole tree. Real charts, real numbers, and the directory/file charts link into the Explorer. |
+| **Listen** | Five of his compositions, including “Risen” (`TOSTheme.HC`), played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. It also includes a GodSong panel: his hymn-generation tables with a browser PRNG standing in for compiled-only `GodBits`. Below them, the eight wordless game and demo themes, on the same voice. |
 | **Glyphs** | His 8×8 bitmap font decoded from `sys_font_std[]` and rendered pixel by pixel, plus the VGA 16-colour palette. |
-| **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable, with per-file line counts that match the Autopsy charts exactly. |
+| **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable — by path, or by content with `text:`. DolDoc files get a reading mode; every file deep-links by line and copies with one click. Per-file line counts match the Autopsy charts exactly. |
 
 ## The source explorer
 
@@ -131,6 +131,7 @@ npm install
 npm run dev         # vite dev server
 npm run typecheck   # tsc --noEmit
 npm test            # music-parser assertions (16 checks)
+npm run test:doldoc  # DolDoc reader assertions (8 checks)
 npm run build       # typecheck + production build into dist/
 npm run test:smoke    # render dist/index.html in jsdom and assert on the DOM
 npm run test:explorer # same, for the explorer: tree, routing, highlighting
@@ -153,5 +154,5 @@ source the explorer serves on demand.
   permission, an LZW compressor adapted from a magazine article, and a heap
   algorithm adapted from a VAX operating system. He listed all of it.
 
-TempleOS was written by one person over nineteen years. This page exists because
+TempleOS was written by one person. This page exists because
 that seemed worth measuring properly.

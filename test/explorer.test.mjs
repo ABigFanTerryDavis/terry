@@ -140,12 +140,53 @@ await settle();
 check('trimmed file shows notice', $('#notice')?.hidden === false, $('#notice')?.textContent?.slice(0, 60) ?? '');
 check('DolDoc badge on .DD', true);
 
-// --- .DD doc badge
+// --- .DD doc badge + reading mode (docs default to Reading)
 window.location.hash = '#/Doc/Credits.DD';
 window.dispatchEvent(new window.Event('hashchange'));
 await settle();
 check('DolDoc badge present', $$('#badges .badge').some((b) => b.textContent === 'DolDoc'));
-check('Credits text loaded', ($('#code')?.textContent ?? '').includes('TempleOS'));
+check(
+  'reading mode renders prose without macros',
+  ($('#doc')?.textContent ?? '').includes('wrote all of TempleOS') &&
+    !($('#doc')?.innerHTML ?? '').includes('$LK'),
+  ($('#doc')?.textContent ?? '').slice(0, 80),
+);
+check('reading mode links the font file', ($('#doc')?.innerHTML ?? '').includes('explorer.html#/Kernel/FontStd.HC'));
+check('mode toggle visible for docs', $('#mode-toggle')?.hidden === false);
+check('copy buttons visible', $('#viewer-actions')?.hidden === false);
+
+// --- source toggle restores code view
+$('#mode-source')?.dispatchEvent(new window.Event('click', { bubbles: true }));
+await settle();
+check('source toggle restores code', $$('#code .l').length > 10, `${$$('#code .l').length} lines`);
+
+// --- line deep link: clicking a line sets the hash
+const line40 = doc.querySelector('.l[data-n="40"]');
+line40?.dispatchEvent(new window.Event('click', { bubbles: true }));
+await settle();
+check('line click deep-links', window.location.hash === '#/Doc/Credits.DD:40', window.location.hash);
+
+// --- full-text search index
+const searchRes = await window.fetch('https://example.test/terry/templeos-search.json');
+const searchIdx = await searchRes.json();
+check(
+  'search index loads with real vocabulary',
+  searchIdx.tokens.length > 20000 && searchIdx.postings.length === searchIdx.tokens.length,
+  `${searchIdx.tokens.length} tokens`,
+);
+const lexAt = searchIdx.tokens.indexOf('lexfilepush');
+check('index covers compiler identifiers', lexAt !== -1 && searchIdx.postings[lexAt].length >= 1);
+
+// --- text: search end to end
+const searchInput = doc.querySelector('#search');
+searchInput.value = 'text:lexfilepush';
+searchInput.dispatchEvent(new window.Event('input', { bubbles: true }));
+await new Promise((r) => setTimeout(r, 400));
+const shown = $$('.t-file').map((b) => b.dataset.path);
+check('text: search finds the lexer', shown.includes('Compiler/Lex.HC'), shown.slice(0, 5).join(', '));
+
+// --- footer provenance
+check('footer cites source HEAD', ($('#rail-foot')?.textContent ?? '').includes('Index built from'));
 
 const failures = checks.filter(([, ok]) => !ok);
 for (const [label, ok, extra] of checks) {
