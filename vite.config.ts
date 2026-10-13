@@ -12,6 +12,11 @@ export default defineConfig({
       input: {
         main: here('./index.html'),
         explorer: here('./explorer.html'),
+        oracle: here('./oracle.html'),
+        compiler: here('./compiler.html'),
+        changelog: here('./changelog.html'),
+        gallery: here('./gallery.html'),
+        tour: here('./tour.html'),
       },
     },
   },

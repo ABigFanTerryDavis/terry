@@ -17,6 +17,11 @@ replayed from the `Play()` notation strings in his code.
 | **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year plus all 49 release commits; a treemap of the whole tree. Real charts, real numbers, and the directory/file charts link into the Explorer. |
 | **Listen** | Five of his compositions, including “Risen” (`TOSTheme.HC`), played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. It also includes a GodSong panel: his hymn-generation tables with a browser PRNG standing in for compiled-only `GodBits`. Below them, the eight wordless game and demo themes, on the same voice. |
 | **Glyphs** | His 8×8 bitmap font decoded from `sys_font_std[]` and rendered pixel by pixel, plus the VGA 16-colour palette. |
+| **Oracle** (`oracle.html`) | The stopwatch oracle: his 7,569-word vocabulary plus the real `GodPick` latch mechanic. |
+| **Compiler** (`compiler.html`) | One line of HolyC through his six real compiler stages, quoting his code. |
+| **Changelog** (`changelog.html`) | 78 dated entries from `Doc/ChgLog.DD`, newest first. |
+| **Gallery** (`gallery.html`) | Twenty demos described in his header comments; TicTacToe, Maze and RainDrops run live. |
+| **Tour** (`tour.html`) | 63 guided-tour stops from `Misc/Tour`, verbatim. |
 | **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable — by path, or by content with `text:`. DolDoc files get a reading mode; every file deep-links by line and copies with one click. Per-file line counts match the Autopsy charts exactly. |
 
 ## The source explorer

@@ -16,7 +16,7 @@ if (!jsFile) throw new Error('no built main js found');
 // dropping the import statements turns them into plain scripts.
 const code = fs
   .readFileSync(path.join(dist, 'assets', jsFile), 'utf8')
-  .replace(/^import\s*[^;]*;/gm, '');
+  .replace(/import\s*[^;]*;/g, '');
 
 const errors = [];
 const dom = new JSDOM(html, { runScripts: 'outside-only', pretendToBeVisual: true });

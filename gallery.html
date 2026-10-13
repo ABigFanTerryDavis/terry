@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The demo gallery — TempleOS</title>
+    <meta
+      name="description"
+      content="Twenty of Terry A. Davis's demos and games, curated from Demo/, with three running live."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <a href="./explorer.html">Source</a>
+        <a href="./oracle.html">Oracle</a>
+        <a href="./compiler.html">Compiler</a>
+        <a href="./changelog.html">Changelog</a>
+        <span class="nav-current">Gallery</span>
+        <a href="./tour.html">Tour</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Demo /</p>
+        <h1 class="hero-title">The demo gallery</h1>
+        <p class="lede">
+          Twenty things he built to show off &mdash; games, solvers, simulations &mdash; described
+          in his own header comments. Three of them run below, rebuilt for the browser from his
+          logic.
+        </p>
+        <p class="lede lede-quiet">
+          The re-creations follow his code where it is visible and say so where they improvise. The
+          rain falls like his rain; the maze solver is mine, the maze is his.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Running now</h2>
+
+        <article class="demo-live" id="demo-tictactoe">
+          <div class="song-head">
+            <h3 class="song-title">TicTacToe</h3>
+            <span class="song-meta">Demo/Games/TicTacToe.HC · his board, my opponent</span>
+          </div>
+          <p class="song-blurb">
+            His board geometry, his X and O routines, his win check. The opponent plays at random
+            &mdash; that part is mine.
+          </p>
+          <canvas class="demo-canvas" id="ttt-canvas" width="480" height="480" role="img" aria-label="Playable tic-tac-toe"></canvas>
+          <p class="nowplaying" id="ttt-status">Your move — you are X.</p>
+          <button type="button" class="btn" id="ttt-new">New game</button>
+        </article>
+
+        <article class="demo-live" id="demo-maze">
+          <div class="song-head">
+            <h3 class="song-title">Maze</h3>
+            <span class="song-meta">Demo/Games/Maze.HC · draw with the mouse, then solve</span>
+          </div>
+          <p class="song-blurb">
+            “Draw a maze with left bttn. Solve maze starting at right click.” His instructions,
+            verbatim. The depth-first solver standing in for his is mine.
+          </p>
+          <canvas class="demo-canvas" id="maze-canvas" width="600" height="420" role="img" aria-label="Drawable maze"></canvas>
+          <p class="nowplaying" id="maze-status">Drag to draw walls. Right-click sets the start. Then solve.</p>
+          <div class="oracle-buttons">
+            <button type="button" class="btn" id="maze-solve">Solve</button>
+            <button type="button" class="btn btn-ghost" id="maze-clear">Clear</button>
+          </div>
+        </article>
+
+        <article class="demo-live" id="demo-rain">
+          <div class="song-head">
+            <h3 class="song-title">RainDrops</h3>
+            <span class="song-meta">Demo/Games/RainDrops.HC · 8,192 drops, his constant</span>
+          </div>
+          <p class="song-blurb">
+            Eight thousand one hundred ninety-two drops, exactly his <code>DROPS_NUM</code>. Yours
+            falls on a smaller sky so the tab survives.
+          </p>
+          <canvas class="demo-canvas" id="rain-canvas" width="640" height="360" role="img" aria-label="Falling rain animation"></canvas>
+        </article>
+      </section>
+
+      <section class="section">
+        <h2>The shelf</h2>
+        <div class="tiles" id="demo-shelf"></div>
+        <p class="fineprint">
+          Descriptions are his header comments, trimmed. Line counts measured, as everywhere else.
+        </p>
+      </section>
+
+      <footer class="foot">
+        <p>
+          Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+          independent reading of them.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/gallery.ts"></script>
+  </body>
+</html>

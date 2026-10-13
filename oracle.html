@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Oracle — TempleOS</title>
+    <meta
+      name="description"
+      content="The high-speed stopwatch oracle of TempleOS, rebuilt with Terry A. Davis's own 7,569-word vocabulary."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <a href="./explorer.html">Source</a>
+        <span class="nav-current">Oracle</span>
+        <a href="./compiler.html">Compiler</a>
+        <a href="./changelog.html">Changelog</a>
+        <a href="./gallery.html">Gallery</a>
+        <a href="./tour.html">Tour</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Adam / God</p>
+        <h1 class="hero-title">The Oracle</h1>
+        <p class="lede">
+          The holiest feature in TempleOS is a stopwatch. You watch numbers fly, you press a key to
+          latch one, and the machine answers with words from a 7,569-word vocabulary &mdash; his
+          vocabulary, in his file, picked by his formula.
+        </p>
+        <p class="lede lede-quiet">
+          This is presented as his artifact, not a toy. The timer here runs on your browser clock,
+          not his keyboard timer, and the random bits come from your machine &mdash; everything else
+          is verbatim.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Ask</h2>
+        <div class="oracle-panel" id="oracle-panel">
+          <p class="oracle-timer" id="oracle-timer" aria-live="off">—</p>
+          <p class="oracle-words" id="oracle-words">Press OKAY and the machine will answer.</p>
+          <p class="oracle-meta" id="oracle-meta"></p>
+          <div class="oracle-buttons">
+            <button type="button" class="btn" id="oracle-okay">OKAY — latch the timer</button>
+            <button type="button" class="btn btn-ghost" id="oracle-ten">Ten words</button>
+            <button type="button" class="btn btn-ghost" id="oracle-again" hidden>Ask again</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>The mechanic, in his code</h2>
+        <div class="prose-grid">
+          <div>
+            <h3>Latching the timer</h3>
+            <p>
+              <code>GodPick</code> puts up a timer and waits. When you press OKAY, whatever the
+              keyboard-event clock reads at that instant becomes random input.
+            </p>
+            <div class="table-wrap">
+              <table>
+                <caption>
+                  Adam/God/HolySpirit.HC:33 — his words on the button
+                </caption>
+                <tbody>
+                  <tr>
+                    <td class="src-cell">
+                      <pre class="code code-static" id="oracle-pick-src"></pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h3>Picking the word</h3>
+            <p>
+              <code>GodWordStr</code> takes that many bits and indexes the loaded vocabulary. That
+              single line is the whole oracle.
+            </p>
+            <div class="table-wrap">
+              <table>
+                <caption>
+                  Adam/God/HolySpirit.HC:138
+                </caption>
+                <tbody>
+                  <tr>
+                    <td class="src-cell">
+                      <pre class="code code-static" id="oracle-word-src"></pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="fineprint">
+          The vocabulary is <code>Adam/God/Vocab.DD</code> &mdash; 7,569 words, one per line, exactly
+          as he left it.
+          <a href="./explorer.html#/Adam/God/HolySpirit.HC">Read HolySpirit.HC</a> ·
+          <a href="./explorer.html#/Adam/God/Vocab.DD">Read Vocab.DD</a> ·
+          <a href="./explorer.html#/Adam/God/HSNotes.DD">His Holy Spirit notes</a>
+        </p>
+      </section>
+
+      <footer class="foot">
+        <p>
+          Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+          independent reading of them.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/oracle.ts"></script>
+  </body>
+</html>

@@ -1,45 +1,24 @@
-// Renders dist/explorer.html in jsdom and asserts the tree, search, routing and
-// highlighting all work against the real generated index and source files.
+// Loads the production explorer bundle in a real DOM and asserts the tree,
+// routing, highlighting, search, reading mode and copy actions all work.
+// The bundle is built with esbuild (CJS) first so shared chunks resolve:
+//   npm run test:explorer
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { JSDOM } from 'jsdom';
 
+const require = createRequire(import.meta.url);
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const dist = path.join(root, 'dist');
-
-const index = JSON.parse(fs.readFileSync(path.join(dist, 'templeos-index.json'), 'utf8'));
 const html = fs.readFileSync(path.join(dist, 'explorer.html'), 'utf8');
-const jsFile = fs.readdirSync(path.join(dist, 'assets')).find((f) => /^explorer-.*\.js$/.test(f));
-if (!jsFile) throw new Error('explorer bundle not found');
-// jsdom's eval cannot run ES modules, and the bundle has no exports, so
-// dropping the import statements turns it into a plain script. The only
-// import is the CSS-injection shim, which we do not care about here.
-const code = fs
-  .readFileSync(path.join(dist, 'assets', jsFile), 'utf8')
-  .replace(/^import\s*[^;]*;/gm, '');
+const bundle = path.join(root, '.cache/explorer.bundle.cjs');
 
 const errors = [];
-const dom = new JSDOM(html, {
-  runScripts: 'outside-only',
-  pretendToBeVisual: true,
-  url: 'https://example.test/terry/explorer.html',
-});
-const { window } = dom;
-window.addEventListener('error', (e) => errors.push(String(e.error ?? e.message)));
-
-// Load the real built stylesheet so jsdom can resolve the cascade. A `[hidden]`
-// element that some author rule re-displays is invisible to a DOM-only test but
-// very much visible to a reader -- which is exactly how this shipped once.
-const cssFile = fs.readdirSync(path.join(dist, 'assets')).find((f) => f.endsWith('.css'));
-if (cssFile) {
-  const style = window.document.createElement('style');
-  style.textContent = fs.readFileSync(path.join(dist, 'assets', cssFile), 'utf8');
-  window.document.head.appendChild(style);
-}
+const checks = [];
+const check = (label, ok, extra = '') => checks.push([label, ok, extra]);
 
 // Serve the real built assets over the virtual origin.
-const served = new Map();
 function fetchShim(url) {
   const u = new URL(String(url), 'https://example.test/terry/explorer.html');
   const rel = decodeURIComponent(u.pathname.replace(/^\/terry\//, ''));
@@ -60,26 +39,38 @@ function fetchShim(url) {
     json: async () => JSON.parse(body),
   });
 }
-window.fetch = fetchShim;
 
-window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(Date.now()), 0);
+const dom = new JSDOM(html, {
+  runScripts: 'outside-only',
+  pretendToBeVisual: true,
+  url: 'https://example.test/terry/explorer.html',
+});
+const { window } = dom;
+window.addEventListener('error', (e) => errors.push(String(e.error ?? e.message)));
+
+// Minimal canvas: jsdom has no 2d context.
 window.HTMLCanvasElement.prototype.getContext = () => null;
+window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(Date.now()), 0);
 
-try {
-  window.eval(code);
-} catch (e) {
-  errors.push(`boot: ${e && e.stack ? e.stack : e}`);
-}
+// The bundle touches document/window/location at import time, so publish the
+// jsdom globals before requiring it.
+globalThis.window = window;
+globalThis.document = window.document;
+globalThis.location = window.location;
+globalThis.history = window.history;
+globalThis.fetch = fetchShim;
+globalThis.requestAnimationFrame = window.requestAnimationFrame;
+globalThis.cancelAnimationFrame = (id) => window.clearTimeout(id);
 
-const settle = () => new Promise((r) => setTimeout(r, 120));
+delete require.cache[bundle];
+require(bundle);
+
+const settle = () => new Promise((r) => setTimeout(r, 150));
 const doc = window.document;
 const $ = (s) => doc.querySelector(s);
 const $$ = (s) => [...doc.querySelectorAll(s)];
 
 await settle();
-
-const checks = [];
-const check = (label, ok, extra = '') => checks.push([label, ok, extra]);
 
 // --- index loaded and rail populated
 check('rail stats populated', /\d+ files/.test($('#rail-stats')?.textContent ?? ''), $('#rail-stats')?.textContent ?? '');
@@ -106,6 +97,7 @@ check('code lines rendered', $$('#code .l').length > 100, `${$$('#code .l').leng
 // the placeholder stayed on top of the code and opening a file did nothing
 // visible. jsdom does not resolve the cascade, so assert on the built CSS
 // directly: the guard has to be present and has to be !important.
+const cssFile = fs.readdirSync(path.join(dist, 'assets')).find((f) => f.endsWith('.css'));
 const builtCss = cssFile ? fs.readFileSync(path.join(dist, 'assets', cssFile), 'utf8') : '';
 const hiddenGuard = /\[hidden\]\s*\{[^}]*display:\s*none\s*!important/.test(builtCss);
 check('built CSS keeps [hidden] authoritative', hiddenGuard);
@@ -167,8 +159,7 @@ await settle();
 check('line click deep-links', window.location.hash === '#/Doc/Credits.DD:40', window.location.hash);
 
 // --- full-text search index
-const searchRes = await window.fetch('https://example.test/terry/templeos-search.json');
-const searchIdx = await searchRes.json();
+const searchIdx = JSON.parse(fs.readFileSync(path.join(dist, 'templeos-search.json'), 'utf8'));
 check(
   'search index loads with real vocabulary',
   searchIdx.tokens.length > 20000 && searchIdx.postings.length === searchIdx.tokens.length,
@@ -181,7 +172,7 @@ check('index covers compiler identifiers', lexAt !== -1 && searchIdx.postings[le
 const searchInput = doc.querySelector('#search');
 searchInput.value = 'text:lexfilepush';
 searchInput.dispatchEvent(new window.Event('input', { bubbles: true }));
-await new Promise((r) => setTimeout(r, 400));
+await new Promise((r) => setTimeout(r, 500));
 const shown = $$('.t-file').map((b) => b.dataset.path);
 check('text: search finds the lexer', shown.includes('Compiler/Lex.HC'), shown.slice(0, 5).join(', '));
 
@@ -197,6 +188,7 @@ if (errors.length) {
   for (const e of errors) console.log('  ' + e.split('\n').slice(0, 5).join('\n  '));
 }
 
+const index = JSON.parse(fs.readFileSync(path.join(dist, 'templeos-index.json'), 'utf8'));
 console.log(
   `\nindex reports ${index.totals.files} files, ` +
     `${(index.totals.readableBytes / 1048576).toFixed(2)} MB readable, ` +

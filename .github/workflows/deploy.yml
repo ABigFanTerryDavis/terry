@@ -35,6 +35,9 @@ jobs:
       - name: Test the music parser
         run: npm test
 
+      - name: Test the DolDoc reader
+        run: npm run test:doldoc
+
       - name: Build
         run: npm run build
 
@@ -43,6 +46,9 @@ jobs:
 
       - name: Smoke test the source explorer
         run: node test/explorer.test.mjs
+
+      - name: Smoke test the tribute pages
+        run: node test/pages.test.mjs
 
       - uses: actions/configure-pages@v5
 

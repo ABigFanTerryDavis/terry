@@ -123,7 +123,28 @@ export const palette: [string, string][] = ${JSON.stringify(a.palette)};
 `;
 fs.writeFileSync(path.join(DEST, 'palette.ts'), paletteTs);
 
-console.log('wrote metrics.ts songs.ts glyphs.ts palette.ts ->', DEST);
+// ---- chapters.ts (oracle wordlist, changelog, tour, demos, compiler)
+const ch = JSON.parse(fs.readFileSync(path.join(CACHE, 'chapters.json'), 'utf8'));
+const chaptersTs = `${hdr}// Chapter data: the oracle wordlist, dated changelog entries,
+// tutorial steps, demo metadata and compiler excerpts. All verbatim.
+export const vocab: string[] = ${JSON.stringify(ch.vocab)};
+
+export interface ChangelogEntry { date: string; body: string; }
+export const changelogIntro: string = ${JSON.stringify(ch.changelog.intro)};
+export const changelog: ChangelogEntry[] = ${JSON.stringify(ch.changelog.entries)};
+
+export interface TourFile { file: string; steps: string[]; }
+export const tour: TourFile[] = ${JSON.stringify(ch.tour)};
+
+export interface DemoEntry { file: string; title: string; header: string; code: number; bytes: number; trimmed: number; living: boolean; }
+export const demos: DemoEntry[] = ${JSON.stringify(ch.demos)};
+
+export interface CompilerStage { stage: string; file: string; note: string; code: number; excerpt: string; }
+export const compilerStages: CompilerStage[] = ${JSON.stringify(ch.compiler)};
+`;
+fs.writeFileSync(path.join(DEST, 'chapters.ts'), chaptersTs);
+
+console.log('wrote metrics.ts songs.ts glyphs.ts palette.ts chapters.ts ->', DEST);
 console.log('songs:', songs.length, '| glyphs:', a.glyphs.length);
 for (const s of songs) {
   console.log(`\n${s.title}  (tempo ${s.tempo})`);

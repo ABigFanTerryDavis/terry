@@ -1371,3 +1371,140 @@ mark.hit {
   background: rgba(255, 255, 85, 0.22);
   color: inherit;
 }
+
+.topbar-sub {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 0.7rem;
+  display: flex;
+  gap: clamp(0.9rem, 2.5vw, 1.75rem);
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.topbar-sub a {
+  color: var(--accent-4);
+  text-decoration: none;
+}
+.topbar-sub a:hover {
+  text-decoration: underline;
+}
+.tile-link {
+  font-family: var(--mono);
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.tile-link:hover {
+  text-decoration: underline;
+}
+.oracle-panel {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+}
+.oracle-timer {
+  font-family: var(--mono);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  letter-spacing: 0.08em;
+  color: var(--accent-4);
+  margin: 0 0 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.oracle-words {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3.4vw, 2rem);
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0 auto 0.75rem;
+  max-width: 30ch;
+  text-wrap: pretty;
+}
+.oracle-meta {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  margin: 0 0 1.5rem;
+  min-height: 1.1em;
+}
+.oracle-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.stage, .tour-file, .demo-live {
+  border: 1px solid var(--line-soft);
+  background: var(--bg);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: 1px;
+}
+.stage-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.stage-num {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent-1);
+}
+.stage-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.stage-title a {
+  text-decoration: none;
+}
+.stage-title a:hover {
+  text-decoration: underline;
+}
+.code-static {
+  counter-reset: none;
+}
+.code-static .l::before {
+  content: none;
+}
+.src-cell {
+  padding: 0;
+  white-space: normal;
+}
+.src-cell .code {
+  padding: 0.9rem 1rem;
+}
+.doc-block {
+  padding-left: 0;
+  padding-right: 0;
+}
+.doc-inline p {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  margin: 0 0 0.5rem;
+}
+.doc-inline p:last-child {
+  margin-bottom: 0;
+}
+.demo-canvas {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  border: 1px solid var(--line-soft);
+  background: #000;
+  image-rendering: pixelated;
+  margin-bottom: 0.9rem;
+  cursor: crosshair;
+}
+.demo-live {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+.demo-live .btn {
+  margin-right: 0.6rem;
+}
