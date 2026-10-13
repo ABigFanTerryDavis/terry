@@ -144,6 +144,31 @@ export const songs: Song[] = [
         "words": "Ash  to...  and    dust  to  dust."
       }
     ]
+  },
+  {
+    "id": "risen",
+    "title": "Risen (TempleOS Theme)",
+    "file": "Demo/AcctExample/TOS/TOSTheme.HC",
+    "blurb": "The oldest song. He picked the name \"risen\" and said to God, \"Oh, you're ambitious,\" and God laughed. The real TOSTheme.",
+    "tempo": 2.85,
+    "lines": [
+      {
+        "notes": "5eDEqFFetEEFqDeCDDEetCGF",
+        "words": ""
+      },
+      {
+        "notes": "5eDEqFFetEEFqDeCDDEetCGF",
+        "words": ""
+      },
+      {
+        "notes": "5eDCqDE4eAA5etEEFEDG4B5DCqF",
+        "words": ""
+      },
+      {
+        "notes": "5eDCqDE4eAA5etEEFEDG4B5DCqF",
+        "words": ""
+      }
+    ]
   }
 ];
 

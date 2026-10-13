@@ -184,7 +184,60 @@ export function stackBar(
   return s;
 }
 
-/** Legend swatches matching a stackBar / chart palette. */
+/** A slice-and-dice treemap. Each top-level directory is a horizontal slice. */
+export function treemapChart(
+  nodes: { label: string; value: number; color?: string; href?: string }[],
+  opts: { height?: number } = {},
+): SVGSVGElement {
+  const h = opts.height ?? 360;
+  const w = 1000;
+  const total = nodes.reduce((s, n) => s + n.value, 0) || 1;
+  const s = svg(w, h, 'chart');
+
+  // Top-level directories as horizontal slices stacked vertically.
+  let y = 0;
+  for (const n of nodes) {
+    const bh = (n.value / total) * h;
+    const drawn = Math.max(1, bh);
+    const rect = el('rect', {
+      x: 0,
+      y,
+      width: w,
+      height: drawn,
+      fill: n.color ?? 'var(--accent-1)',
+      class: 'treemap-seg',
+      style: 'cursor:pointer',
+    });
+    const title = el('title');
+    title.textContent = `${n.label}: ${n.value.toLocaleString('en-US')} lines`;
+    rect.appendChild(title);
+    if (n.href) {
+      const link = el('a', { href: n.href, 'xlink:href': n.href, class: 'treemap-link' });
+      link.appendChild(rect);
+      s.appendChild(link);
+    } else {
+      s.appendChild(rect);
+    }
+    // Label centered in the slice, small.
+    if (drawn > 30) {
+      const text = el('text', {
+        x: w / 2,
+        y: y + drawn / 2,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        fill: '#0a0a0a',
+        'font-size': Math.min(18, drawn / 2.5) + 'px',
+        'font-family': 'inherit',
+        'pointer-events': 'none',
+      });
+      text.textContent = n.label;
+      s.appendChild(text);
+    }
+    y += drawn;
+  }
+  return s;
+}
+
 export function legend(items: { label: string; color: string; value?: string }[]): HTMLElement {
   const wrap = document.createElement('ul');
   wrap.className = 'legend';

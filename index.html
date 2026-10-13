@@ -111,8 +111,15 @@
 
         <figure class="chart-block">
           <figcaption>
+            <h3>The full tree, scaled by lines</h3>
+            <p>Every directory is a horizontal slice; area equals lines of code.</p>
+          </figcaption>
+          <div class="chart-host" id="chart-treemap"></div>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
             <h3>The twenty largest files</h3>
-            <p>Single largest is the kernel itself.</p>
+            <p>Single-file contribution to the whole.</p>
           </figcaption>
           <div class="chart-host" id="chart-files"></div>
           <div class="table-wrap">
@@ -204,6 +211,15 @@
             2.5, and it climbs with the number.
           </p>
         </figure>
+
+        <!-- ---------------------------------------------------------- GodSong -->
+        <figure class="chart-block">
+          <figcaption>
+            <h3>GodSong &mdash; make God generate music</h3>
+            <p>His procedural hymn generator, rebuilt in the browser. The PRNG (<code>GodBits</code>) is compiled-only &mdash; <code>crypto.getRandomValues</code> stands in. The duration and note-selection tables are Terry's.</p>
+          </figcaption>
+          <div class="god-song-panel" id="god-song-panel"></div>
+        </figure>
       </section>
 
       <!-- ---------------------------------------------------------- glyphs -->
@@ -248,8 +264,11 @@
               file by file at build time. Lines are split into code, comment and blank by a parser
               that understands both <code>//</code> and <code>/* */</code>. The commit counts come
               from <code>git log</code> on that repository. The songs are the literal
-              <code>Play()</code> string literals found in <code>Demo/Snd</code> and
-              <code>Apps/Psalmody/Examples</code>. The font is the <code>sys_font_std[]</code> table
+              <code>Play()</code> string literals found in <code>Demo/Snd</code>,
+              <code>Apps/Psalmody/Examples</code> and <code>Demo/AcctExample/TOS</code>
+              (including “Risen”). The GodSong panel reuses his duration/note tables
+              with a browser PRNG standing in for compiled-only <code>GodBits</code>.
+              The font is the <code>sys_font_std[]</code> table
               in <code>Kernel/FontStd.HC</code>, decoded pixel by pixel.
             </p>
             <p>

@@ -14,8 +14,8 @@ replayed from the `Play()` notation strings in his code.
 
 | Section | What it does |
 | --- | --- |
-| **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year. Real charts, real numbers. |
-| **Listen** | Four of his compositions, played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. |
+| **Autopsy** | Line counts per directory, per file and per extension; code vs comment vs blank; commits per year; a treemap of the whole tree. Real charts, real numbers, and the directory/file charts link into the Explorer. |
+| **Listen** | Five of his compositions, including “Risen” (`TOSTheme.HC`), played through a port of `Play()` from `Adam/ASnd.HC`, at the pitch given by his own formula in `Kernel/KMisc.HC`. It also includes a GodSong panel: his hymn-generation tables with a browser PRNG standing in for compiled-only `GodBits`. |
 | **Glyphs** | His 8×8 bitmap font decoded from `sys_font_std[]` and rendered pixel by pixel, plus the VGA 16-colour palette. |
 | **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable, with per-file line counts that match the Autopsy charts exactly. |
 

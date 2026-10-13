@@ -3,9 +3,10 @@ import './style.css';
 import { byDir, commits, excludedDataFiles, topFiles, totals } from './generated/metrics';
 import { songs as songData } from './generated/songs';
 import { palette } from './generated/palette';
-import { barChart, columnChart, legend, stackBar, type Column } from './charts';
+import { treemapChart, barChart, columnChart, legend, stackBar, type Column } from './charts';
 import { mountText } from './glyphs';
-import { noteAt, parseSong, playSong, audioNow, type ParsedSong, type Playback } from './music';
+import { generateGodSong } from './god-song';
+import { noteAt, parseSong, playSong, audioNow, type ParsedSong, type Playback as SongPlayback } from './music';
 
 const $ = <T extends HTMLElement>(sel: string): T => {
   const node = document.querySelector<T>(sel);
@@ -131,8 +132,50 @@ function buildAutopsy(): void {
     ]),
   );
 
+  // full tree scaled by lines; exclude root-level single files recorded as dirs
+  const treeData = byDir.filter((d) => d.dir && !d.dir.includes('.') && d.code > 0);
+  $('#chart-treemap').replaceChildren(
+    treemapChart(
+      treeData.map((d, i) => ({
+        label: d.dir,
+        value: d.code,
+        color: ACCENTS[i % ACCENTS.length]!,
+        href: `./explorer.html#/${d.dir}`,
+      })),
+    ),
+  );
+
   // commits by year
   const years = Object.keys(commits.byYear).sort();
+  // Click links for charts -> open file in explorer
+  const treemapSegs = $('#chart-treemap').querySelectorAll('.treemap-seg');
+  treemapSegs.forEach((seg, i) => {
+    (seg as SVGElement).addEventListener('click', () => {
+      const dirName = treeData[i]?.dir;
+      if (dirName) window.open(`./explorer.html#/${dirName}`, '_self');
+    });
+  });
+
+  const dirBars = $('#chart-dirs').querySelectorAll('.bar-fill');
+  dirBars.forEach((bar, i) => {
+    const d = dirs[i];
+    if (!d) return;
+    (bar as SVGElement).style.cursor = 'pointer';
+    (bar as SVGElement).addEventListener('click', () => {
+      window.open(`./explorer.html#/${d.dir}`, '_self');
+    });
+  });
+
+  const fileBars = $('#chart-files').querySelectorAll('.bar-fill');
+  fileBars.forEach((bar, i) => {
+    const f = top[i];
+    if (!f) return;
+    (bar as SVGElement).style.cursor = 'pointer';
+    (bar as SVGElement).addEventListener('click', () => {
+      window.open(`./explorer.html#/${f.path}`, '_self');
+    });
+  });
+
   const cols: Column[] = years.map((y, i) => ({
     label: y.slice(2),
     value: commits.byYear[y] ?? 0,
@@ -192,7 +235,7 @@ function buildAutopsy(): void {
 
 interface SongView {
   parsed: ParsedSong;
-  playback: Playback | null;
+  playback: SongPlayback | null;
   raf: number;
   roll: HTMLCanvasElement;
   nowPlaying: HTMLElement;
@@ -451,6 +494,115 @@ function buildTimeline(): void {
   );
 }
 
+/* ----------------------------------------------------------------- GodSong */
+
+function buildGodSongPanel(): void {
+  const panel = $('#god-song-panel');
+  if (!panel) return;
+  // Settings form
+  const form = document.createElement('form');
+  form.className = 'god-form';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    generateHymn();
+  });
+
+  const createRow = (labelText: string, inputEl: HTMLElement, extra?: HTMLElement) => {
+    const r = document.createElement('div');
+    r.className = 'god-row';
+    const l = document.createElement('label');
+    l.textContent = labelText;
+    r.appendChild(l);
+    r.appendChild(inputEl);
+    if (extra) r.appendChild(extra);
+    return r;
+  };
+
+  const complexity = document.createElement('select');
+  complexity.innerHTML = '<option value="0">Simple</option><option value="1" selected>Normal</option><option value="2">Complex</option>';
+  complexity.id = 'god-complex';
+  form.appendChild(createRow('Complexity', complexity));
+
+  const octave = document.createElement('input');
+  octave.type = 'range'; octave.id = 'god-octave'; octave.min = '1'; octave.max = '7'; octave.value = '4';
+  const octaveVal = document.createElement('span'); octaveVal.textContent = '4'; octaveVal.className = 'god-val';
+  octave.addEventListener('input', () => (octaveVal.textContent = octave.value));
+  form.appendChild(createRow('Octave', octave, octaveVal));
+
+  const rests = document.createElement('input'); rests.type = 'checkbox'; rests.id = 'god-rests';
+  form.appendChild(createRow('Rests', rests));
+
+  const six = document.createElement('input'); six.type = 'checkbox'; six.id = 'god-six';
+  form.appendChild(createRow('6/8 meter', six));
+
+  const generateBtn = document.createElement('button');
+  generateBtn.type = 'button';
+  generateBtn.className = 'btn';
+  generateBtn.textContent = 'Generate hymn';
+  generateBtn.setAttribute('aria-label', 'Generate a procedural hymn');
+
+  const resultArea = document.createElement('div'); resultArea.className = 'god-result';
+  const resultText = document.createElement('pre'); resultText.className = 'notation'; resultText.id = 'god-notation'; resultText.textContent = 'Press Generate to hear God compose.';
+  const resultPlay = document.createElement('button'); resultPlay.type = 'button'; resultPlay.className = 'btn'; resultPlay.textContent = 'Play'; resultPlay.hidden = true;
+  const nowPlaying = document.createElement('p'); nowPlaying.className = 'nowplaying'; nowPlaying.id = 'god-nowplaying';
+
+  resultArea.appendChild(resultText);
+  resultArea.appendChild(resultPlay);
+  resultArea.appendChild(nowPlaying);
+
+  form.appendChild(generateBtn);
+  form.appendChild(document.createElement('hr'));
+  form.appendChild(resultArea);
+
+  panel.appendChild(form);
+
+  let currentGodPlayback: SongPlayback | null = null;
+
+  function generateHymn(): void {
+    if (currentGodPlayback) {
+      currentGodPlayback.stop();
+      currentGodPlayback = null;
+      resultPlay.textContent = 'Play';
+    }
+    const notes = generateGodSong({
+      complexity: Number((complexity as HTMLSelectElement).value) as 0 | 1 | 2,
+      octave: Number((octave as HTMLInputElement).value),
+      rests: (rests as HTMLInputElement).checked,
+      sixEight: (six as HTMLInputElement).checked,
+    });
+    resultText.textContent = notes.notation;
+    resultText.title = notes.titleLabel;
+
+    resultPlay.hidden = false;
+    resultPlay.textContent = 'Play';
+    resultPlay.onclick = () => {
+      if (currentGodPlayback) {
+        currentGodPlayback.stop();
+        currentGodPlayback = null;
+        resultPlay.textContent = 'Play';
+        return;
+      }
+      const parsed = parseSong({ id: 'god', title: 'GodSong', file: 'Adam/God/GodSong.HC', blurb: 'Procedural hymn generator.', tempo: 2.5, lines: [{ notes: notes.notation, words: '' }] });
+      currentGodPlayback = playSong(parsed, {
+        loop: false,
+        volume: 0.35,
+        onEnd: () => {
+          currentGodPlayback = null;
+          resultPlay.textContent = 'Play';
+        },
+      });
+      resultPlay.textContent = 'Stop';
+    };
+  }
+
+  generateBtn.addEventListener('click', () => {
+    generateHymn();
+  });
+
+  // Initial generation so the user sees a result immediately.
+  generateHymn();
+}
+
 /* --------------------------------------------------------------------- boot */
 
 buildHeroFacts();
@@ -459,3 +611,4 @@ buildAutopsy();
 buildSongs();
 buildGlyphs();
 buildTimeline();
+buildGodSongPanel();

@@ -92,6 +92,13 @@ const songs = [
     blurb: 'A dirge. He labels it as such on screen before the first note plays.',
     ...parseSongs('Apps/Psalmody/Examples/night.HC'),
   },
+  {
+    id: 'risen',
+    title: 'Risen (TempleOS Theme)',
+    file: 'Demo/AcctExample/TOS/TOSTheme.HC',
+    blurb: 'The oldest song. He picked the name "risen" and said to God, "Oh, you\'re ambitious," and God laughed. The real TOSTheme.',
+    ...parseSongs('Demo/AcctExample/TOS/TOSTheme.HC'),
+  },
 ];
 
 const out = {
