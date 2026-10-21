@@ -42,7 +42,7 @@ jobs:
         run: npm run build
 
       - name: Smoke test the built bundle
-        run: node test/smoke.test.mjs
+        run: npm run test:smoke
 
       - name: Smoke test the source explorer
         run: npm run test:explorer
