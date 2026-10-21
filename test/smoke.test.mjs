@@ -1,25 +1,23 @@
-// Loads the production bundle in a real DOM and checks that it renders.
-//   npm run test:smoke   (builds first)
+// Loads the main page bundle in a real DOM and checks that it renders.
+//   npm run test:smoke   (bundles src/main.ts with esbuild first)
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { JSDOM } from 'jsdom';
 
+const require = createRequire(import.meta.url);
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const dist = path.join(root, 'dist');
+const bundle = path.join(root, '.cache/main.bundle.cjs');
 const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-const jsFile = fs
-  .readdirSync(path.join(dist, 'assets'))
-  .find((f) => /^(main|index)-.*\.js$/.test(f));
-if (!jsFile) throw new Error('no built main js found');
-// jsdom's eval cannot run ES modules, and these bundles have no exports, so
-// dropping the import statements turns them into plain scripts.
-const code = fs
-  .readFileSync(path.join(dist, 'assets', jsFile), 'utf8')
-  .replace(/import\s*[^;]*;/g, '');
 
 const errors = [];
-const dom = new JSDOM(html, { runScripts: 'outside-only', pretendToBeVisual: true });
+const dom = new JSDOM(html, {
+  runScripts: 'outside-only',
+  pretendToBeVisual: true,
+  url: 'https://example.test/terry/index.html',
+});
 const { window } = dom;
 
 window.addEventListener('error', (e) => errors.push(String(e.error ?? e.message)));
@@ -53,13 +51,21 @@ window.HTMLCanvasElement.prototype.getContext = function () {
 // No AudioContext until the user clicks; the page must not need it on load.
 window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(Date.now()), 0);
 
+// The bundle touches document/window at import time.
+globalThis.window = window;
+globalThis.document = window.document;
+globalThis.location = window.location;
+globalThis.history = window.history;
+globalThis.requestAnimationFrame = window.requestAnimationFrame;
+
+delete require.cache[bundle];
 try {
-  window.eval(code);
+  require(bundle);
 } catch (e) {
   errors.push(`boot: ${e && e.stack ? e.stack : e}`);
 }
 
-await new Promise((r) => setTimeout(r, 60));
+await new Promise((r) => setTimeout(r, 120));
 
 const doc = window.document;
 const count = (sel) => doc.querySelectorAll(sel).length;
@@ -86,6 +92,7 @@ const checks = [
   ['font canvas drawn', count('#font-sample canvas') === 1],
   ['glyph pixels drawn', ctxCalls.fillRect > 100],
   ['piano roll drawn', ctxCalls.stroke >= 13 * 5],
+  ['global search mounted', count('.global-search input') === 1],
   ['no runtime errors', errors.length === 0],
 ];
 

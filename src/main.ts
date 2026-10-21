@@ -7,6 +7,7 @@ import { treemapChart, barChart, columnChart, legend, stackBar, type Column } fr
 import { mountText } from './glyphs';
 import { generateGodSong } from './god-song';
 import { noteAt, parseSong, playSong, audioNow, type ParsedSong, type Playback as SongPlayback } from './music';
+import { mountSearch } from './search-ui';
 
 const $ = <T extends HTMLElement>(sel: string): T => {
   const node = document.querySelector<T>(sel);
@@ -660,3 +661,13 @@ buildSongs();
 buildGlyphs();
 buildTimeline();
 buildGodSongPanel();
+
+mountSearch({
+  quickLinks: [
+    { label: 'The Manual', href: './manual.html' },
+    { label: 'TempleOS University', href: './university.html' },
+    { label: 'The Desktop', href: './desktop.html' },
+    { label: 'Source explorer', href: './explorer.html' },
+    { label: 'The Oracle', href: './oracle.html' },
+  ],
+});

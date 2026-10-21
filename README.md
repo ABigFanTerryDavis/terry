@@ -22,6 +22,10 @@ replayed from the `Play()` notation strings in his code.
 | **Changelog** (`changelog.html`) | 78 dated entries from `Doc/ChgLog.DD`, newest first. |
 | **Gallery** (`gallery.html`) | Twenty demos described in his header comments; TicTacToe, Maze and RainDrops run live. |
 | **Tour** (`tour.html`) | 63 guided-tour stops from `Misc/Tour`, verbatim. |
+| **Manual** (`manual.html`) | All 110 DolDoc documents, rendered as a readable book with a table of contents. |
+| **University** (`university.html`) | His 13 own lectures from `Demo/Lectures` — including a compiler written as a lesson. |
+| **Desktop** (`desktop.html`) | His actual home screen, rebuilt from `PersonalMenu.DD` and `Doc/Welcome.DD`. |
+| **Search** | One box on every page, across the site prose and all 659 source files. Press `/`. |
 | **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable — by path, or by content with `text:`. DolDoc files get a reading mode; every file deep-links by line and copies with one click. Per-file line counts match the Autopsy charts exactly. |
 
 ## The source explorer

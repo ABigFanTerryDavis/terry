@@ -1,5 +1,6 @@
 import './style.css';
 import { demos } from './generated/chapters';
+import { mountSearch } from './search-ui';
 
 const $ = <T extends HTMLElement>(sel: string): T => {
   const node = document.querySelector<T>(sel);
@@ -330,3 +331,12 @@ bootShelf();
 bootTicTacToe();
 bootMaze();
 bootRain();
+
+mountSearch({
+  quickLinks: [
+    { label: 'The Manual', href: './manual.html' },
+    { label: 'TempleOS University', href: './university.html' },
+    { label: 'The Desktop', href: './desktop.html' },
+    { label: 'The record', href: './index.html' },
+  ],
+});

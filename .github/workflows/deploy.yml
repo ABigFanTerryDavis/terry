@@ -50,6 +50,9 @@ jobs:
       - name: Smoke test the tribute pages
         run: npm run test:pages
 
+      - name: Test the global search
+        run: npm run test:search
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

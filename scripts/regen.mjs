@@ -141,6 +141,18 @@ export const demos: DemoEntry[] = ${JSON.stringify(ch.demos)};
 
 export interface CompilerStage { stage: string; file: string; note: string; code: number; excerpt: string; }
 export const compilerStages: CompilerStage[] = ${JSON.stringify(ch.compiler)};
+
+export interface ManualDoc { path: string; title: string; group: string; blurb: string; bytes: number; lines: number; trimmed: number; }
+export const manual: ManualDoc[] = ${JSON.stringify(ch.manual)};
+
+export interface Lecture { path: string; title: string; blurb: string; bytes: number; lines: number; ext: string; }
+export const lectures: Lecture[] = ${JSON.stringify(ch.lectures)};
+
+export interface DesktopItem { type: string; label: string; target: string; }
+export const desktop: { items: DesktopItem[]; welcome: string; raw: string } = ${JSON.stringify(ch.desktop)};
+
+export interface SitePage { file: string; title: string; keywords: string; text: string; }
+export const sitePages: SitePage[] = ${JSON.stringify(ch.siteText)};
 `;
 fs.writeFileSync(path.join(DEST, 'chapters.ts'), chaptersTs);
 

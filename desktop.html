@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Desktop — TempleOS</title>
+    <meta
+      name="description"
+      content="Terry A. Davis's actual TempleOS home screen, rebuilt from PersonalMenu.DD."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <a href="./explorer.html">Source</a>
+        <a href="./manual.html">Manual</a>
+        <a href="./university.html">University</a>
+        <span class="nav-current">Desktop</span>
+      </nav>
+      <nav aria-label="Tributes" class="topbar-sub">
+        <a href="./oracle.html">Oracle</a>
+        <a href="./compiler.html">Compiler</a>
+        <a href="./changelog.html">Changelog</a>
+        <a href="./gallery.html">Gallery</a>
+        <a href="./tour.html">Tour</a>
+        <a href="./manual.html">Manual</a>
+        <a href="./university.html">University</a>
+        <a href="./desktop.html">Desktop</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">PersonalMenu.DD</p>
+        <h1 class="hero-title">The Desktop</h1>
+        <p class="lede" id="desktop-lede">
+          Every morning for years, this is what he saw. The home screen of a man who lived alone
+          inside an operating system he wrote himself.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>What he saw</h2>
+        <div class="desktop-frame" id="desktop-frame">
+          <div class="desktop-titlebar" id="desktop-titlebar">
+            <span class="desktop-title">/Home</span>
+            <span class="desktop-buttons"><i></i><i></i><i></i></span>
+          </div>
+          <div class="desktop-screen">
+            <div class="desktop-welcome doc" id="desktop-welcome"></div>
+            <div class="desktop-menu" id="desktop-menu"></div>
+          </div>
+        </div>
+        <p class="fineprint" id="desktop-credit"></p>
+      </section>
+
+      <section class="section">
+        <h2>The directories he kept one click away</h2>
+        <div class="tiles" id="desktop-dirs"></div>
+        <p class="fineprint">
+          Parsed from the <code>$MA</code> entries in his personal menu &mdash; the
+          <code>Cd</code>/<code>Dir</code> shortcuts, in the order he wrote them.
+        </p>
+      </section>
+
+      <footer class="foot">
+        <p>
+          Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+          independent reading of them.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/desktop.ts"></script>
+  </body>
+</html>

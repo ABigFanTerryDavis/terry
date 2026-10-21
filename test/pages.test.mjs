@@ -54,6 +54,32 @@ const PAGES = [
       ['his words present', (d) => (d.querySelector('#tour-stops')?.textContent ?? '').includes('help index')],
     ],
   },
+  {
+    html: 'manual.html',
+    entry: 'manual',
+    checks: [
+      ['manual documents listed', (d) => d.querySelectorAll('.toc-item').length >= 90],
+      ['manual grouped by directory', (d) => d.querySelectorAll('.toc-group').length >= 3],
+      ['filter box present', (d) => !!d.querySelector('.toc-filter')],
+    ],
+  },
+  {
+    html: 'university.html',
+    entry: 'university',
+    checks: [
+      ['thirteen lectures', (d) => d.querySelectorAll('.uni-card').length === 13],
+      ['lecture titles present', (d) => (d.querySelector('#uni-grid')?.textContent ?? '').includes('Mini Compiler')],
+    ],
+  },
+  {
+    html: 'desktop.html',
+    entry: 'desktop',
+    checks: [
+      ['welcome text rendered', (d) => (d.querySelector('#desktop-welcome')?.textContent ?? '').includes('TempleOS')],
+      ['menu entries rendered', (d) => d.querySelectorAll('.desktop-item').length >= 8],
+      ['directory shortcuts rendered', (d) => d.querySelectorAll('#desktop-dirs .tile').length >= 10],
+    ],
+  },
 ];
 
 let failed = 0;

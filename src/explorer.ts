@@ -1,6 +1,7 @@
 import './style.css';
 import { highlightHolyC } from './highlight';
 import { renderDolDoc } from './doldoc';
+import { mountSearch } from './search-ui';
 
 interface FileEntry {
   path: string;
@@ -635,6 +636,15 @@ async function boot(): Promise<void> {
     const hash = `#/${state.current}:${n}`;
     if (location.hash !== hash) location.hash = hash;
     scrollToLine(n);
+  });
+
+  mountSearch({
+    quickLinks: [
+      { label: 'The Manual', href: './manual.html' },
+      { label: 'TempleOS University', href: './university.html' },
+      { label: 'The Desktop', href: './desktop.html' },
+      { label: 'The record', href: './index.html' },
+    ],
   });
 
   // suggested files on the empty state

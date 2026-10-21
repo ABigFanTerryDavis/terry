@@ -186,10 +186,159 @@ const compiler = stages
   })
   .filter((c) => c.excerpt);
 
-const chapters = { vocab, changelog, tour, demos, compiler };
+// ------------------------------------------------------------ DolDoc strip
+// Remove inline macros, keep the words. Used for titles and blurbs.
+function stripDolDoc(raw) {
+  return raw
+    .replace(/\$\$[^$]*\$\$/g, '') // colour shorthands
+    .replace(/\$[^$]*\$/g, '') // all other macros
+    .replace(/\\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function firstProse(raw, max) {
+  for (const line of raw.split(/\r?\n/)) {
+    const t = stripDolDoc(line);
+    if (t.length < 12) continue;
+    if (/^\*+$/.test(t)) continue;
+    return t.slice(0, max);
+  }
+  return '';
+}
+
+// ------------------------------------------------------------------ Manual
+// Every .DD in the tree is a document he wrote. The Manual renders them.
+// Read the TRIMMED copies from public/templeos so binary tails never leak
+// into titles.
+function docTitle(raw) {
+  const m = /\$TX\+CX,"([^"]*)"\$/.exec(raw);
+  if (m?.[1]) return m[1];
+  const prose = firstProse(raw, 60);
+  return prose.replace(/^\*+\s*/, '').trim();
+}
+const manual = explorerIndex.files
+  .filter((f) => f.ext === 'DD')
+  .map((f) => {
+    let raw = '';
+    try {
+      raw = fs.readFileSync(path.join(ROOT, 'public/templeos', f.path), 'utf8');
+    } catch {
+      raw = '';
+    }
+    return {
+      path: f.path,
+      title: docTitle(raw),
+      group: f.dir ? f.dir.split('/')[0] : 'root',
+      blurb: firstProse(raw, 160),
+      bytes: f.bytes,
+      lines: f.lines,
+      trimmed: f.trimmed,
+    };
+  })
+  .filter((d) => d.title && d.title.length > 1);
+
+// -------------------------------------------------------------- University
+// Demo/Lectures — his own tutorials. A compiler written as a lesson.
+const lectureDir = 'Demo/Lectures';
+const lectures = explorerIndex.files
+  .filter((f) => f.dir === lectureDir)
+  .map((f) => {
+    let raw = '';
+    try {
+      raw = fs.readFileSync(path.join(ROOT, 'public/templeos', f.path), 'utf8');
+    } catch {
+      raw = '';
+    }
+    // A lecture's own title, if it has one, beats the filename.
+    const m = /\$TX\+CX,"([^"]*)"\$/.exec(raw);
+    const title = m?.[1]
+      ? m[1]
+      : f.name.replace(/\.[A-Z]+$/, '').replace(/([a-z])([A-Z])/g, '$1 $2');
+    return {
+      path: f.path,
+      title,
+      blurb: firstProse(raw, 170),
+      bytes: f.bytes,
+      lines: f.lines,
+      ext: f.ext,
+    };
+  })
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// ----------------------------------------------------------------- Desktop
+// PersonalMenu.DD is what he saw every morning.
+function parseDesktop(raw) {
+  const items = [];
+  // Labelled menu entries: $MA,"Label",LM="..."$ and $LK,"Label",A="..."$
+  const labelled = /\$(MA(?:\+PU|-X\+PU)?|LK)\s*,\s*"((?:[^"\\]|\\.)*)"\s*(?:,\s*(?:LM="((?:[^"\\]|\\.)*)"|A="((?:[^"\\]|\\.)*)"))?/g;
+  let m;
+  while ((m = labelled.exec(raw)) !== null) {
+    const kind = m[1];
+    const label = m[2].replace(/\\(.)/g, '$1').trim();
+    const lm = m[3];
+    const a = m[4];
+    if (!label) continue;
+    if (kind === 'MA') {
+      const target = lm ? /Cd\(\\?"((?:[^"\\]|\\.)*?)\\?"\)/.exec(lm)?.[1] ?? '' : '';
+      items.push({ type: 'shortcut', label, target: target.replace(/\\(.)/g, '$1') });
+    } else {
+      const file = a?.startsWith('FI:::') ? a.slice(5).replace(/^:+/, '').replace(/^\//, '') : '';
+      items.push({ type: file ? 'file' : 'action', label, target: file });
+    }
+  }
+  // The directory shortcuts carry no label: $MA,LM="Cd(\"::/Demo\");Dir;\n"$
+  const dirs = /\$MA\s*,\s*LM\s*=\s*"Cd\(\\?"((?:[^"\\]|\\.)*?)\\?"\)/g;
+  const seen = new Set();
+  while ((m = dirs.exec(raw)) !== null) {
+    const target = m[1].replace(/\\(.)/g, '$1');
+    if (seen.has(target)) continue;
+    seen.add(target);
+    items.push({ type: 'dir', label: target.replace(/^::\//, ''), target });
+  }
+  return items;
+}
+const desktopRaw = exists('PersonalMenu.DD') ? read('PersonalMenu.DD') : '';
+const desktop = {
+  items: parseDesktop(desktopRaw),
+  welcome: exists('Doc/Welcome.DD') ? read('Doc/Welcome.DD') : '',
+  raw: desktopRaw,
+};
+
+// ------------------------------------------------------------- Site search
+// Static prose from our own pages, so search covers the site and the tree.
+const sitePages = [
+  ['index.html', 'The record', 'Terry A. Davis, TempleOS, the record, autopsy, listen, glyphs, timeline, sources'],
+  ['explorer.html', 'Source explorer', 'Browse all 659 TempleOS source files, search contents, read DolDoc documents'],
+  ['oracle.html', 'The Oracle', 'Stopwatch oracle, vocabulary, GodPick, GodWordStr, words'],
+  ['compiler.html', 'Anatomy of his compiler', 'HolyC compiler stages, lexer, parser, optimiser, code generation'],
+  ['changelog.html', 'Release notes', 'Change log, releases, versions, TempleOS history'],
+  ['gallery.html', 'Demo gallery', 'Demos and games, TicTacToe, Maze, RainDrops, sprite, graphics'],
+  ['tour.html', 'His tour', 'Guided tour, Misc/Tour, tutorial stops'],
+  ['manual.html', 'The Manual', 'All 113 DolDoc documents, the whole manual, read'],
+  ['university.html', 'TempleOS University', 'Lectures, tutorials, MiniCompiler, fixed point, optimization, ring3'],
+  ['desktop.html', 'The Desktop', 'PersonalMenu, home screen, what Terry saw every morning'],
+];
+const siteText = [];
+for (const [file, title, keywords] of sitePages) {
+  const p = path.join(ROOT, file);
+  if (!fs.existsSync(p)) continue;
+  const html = fs.readFileSync(p, 'utf8');
+  const text = html
+    .replace(/<script[\s\S]*?<\/script>/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  siteText.push({ file, title, keywords, text });
+}
+
+const chapters = { vocab, changelog, tour, demos, compiler, manual, lectures, desktop, siteText };
 fs.writeFileSync(OUT, JSON.stringify(chapters));
 console.log(
   `vocab ${vocab.length} words | changelog ${changelog.entries.length} entries | ` +
     `tour ${tour.reduce((s, t) => s + t.steps.length, 0)} steps in ${tour.length} files | ` +
-    `demos ${demos.length} | compiler stages ${compiler.length}`,
+    `demos ${demos.length} | compiler stages ${compiler.length} | ` +
+    `manual ${manual.length} docs | lectures ${lectures.length} | ` +
+    `desktop ${desktop.items.length} items | site pages ${siteText.length}`,
 );

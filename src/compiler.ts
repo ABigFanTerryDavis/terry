@@ -2,6 +2,7 @@ import './style.css';
 import { compilerStages } from './generated/chapters';
 import { highlightHolyC } from './highlight';
 import { escapeHtml } from './highlight-html';
+import { mountSearch } from './search-ui';
 
 const $ = <T extends HTMLElement>(sel: string): T => {
   const node = document.querySelector<T>(sel);
@@ -58,4 +59,12 @@ function boot(): void {
   );
 }
 
+mountSearch({
+  quickLinks: [
+    { label: 'The Manual', href: './manual.html' },
+    { label: 'TempleOS University', href: './university.html' },
+    { label: 'The Desktop', href: './desktop.html' },
+    { label: 'The record', href: './index.html' },
+  ],
+});
 boot();
