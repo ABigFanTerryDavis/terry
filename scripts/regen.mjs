@@ -11,6 +11,8 @@ fs.mkdirSync(DEST, { recursive: true });
 
 const d = JSON.parse(fs.readFileSync(path.join(CACHE, 'data.json'), 'utf8'));
 const a = JSON.parse(fs.readFileSync(path.join(CACHE, 'assets.json'), 'utf8'));
+// extract-demands.mjs reads the checkout directly, so point it at the same one.
+process.env.TEMPLEOS_SRC = process.env.TEMPLEOS_SRC ?? path.join(ROOT, '.templeos/TempleOS');
 
 const hdr = `// AUTO-GENERATED from the TempleOS source tree. Do not edit by hand.
 // Source: https://github.com/cia-foundation/TempleOS
@@ -155,6 +157,38 @@ export interface SitePage { file: string; title: string; keywords: string; text:
 export const sitePages: SitePage[] = ${JSON.stringify(ch.siteText)};
 `;
 fs.writeFileSync(path.join(DEST, 'chapters.ts'), chaptersTs);
+
+// ---- demands.ts + language.ts
+const { demandsWithScore, directives, types, LANGUAGE_DOCS } = await import('./extract-demands.mjs');
+
+const demandsTs = `${hdr}// Doc/Demands.DD, parsed. The 2026 scorecard is hand-curated
+// and every claim in it is checkable.
+export interface DemandLink { label: string; file: string; }
+export interface DemandCount { file: string; lines: number; note: string; }
+export interface DemandScore { verdict: string; answer: string; note: string; }
+export interface Demand {
+  text: string;
+  links: DemandLink[];
+  counts: DemandCount[];
+  raw: string[];
+  scores: DemandScore[];
+  kind: 'demand' | 'notice';
+}
+export const demands: Demand[] = ${JSON.stringify(demandsWithScore)};
+`;
+fs.writeFileSync(path.join(DEST, 'demands.ts'), demandsTs);
+
+const languageTs = `${hdr}// The HolyC language, measured from the tree.
+export interface Directive { name: string; desc: string; doc: string; count: number; }
+export const directives: Directive[] = ${JSON.stringify(directives)};
+
+export interface HolyType { type: string; count: number; }
+export const types: HolyType[] = ${JSON.stringify(types)};
+
+export interface LanguageDoc { file: string; title: string; blurb: string; }
+export const languageDocs: LanguageDoc[] = ${JSON.stringify(LANGUAGE_DOCS.map(([file, title, blurb]) => ({ file, title, blurb })))};
+`;
+fs.writeFileSync(path.join(DEST, 'language.ts'), languageTs);
 
 console.log('wrote metrics.ts songs.ts glyphs.ts palette.ts chapters.ts ->', DEST);
 console.log('songs:', songs.length, '| glyphs:', a.glyphs.length);

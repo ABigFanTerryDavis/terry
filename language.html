@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HolyC, in his own words — TempleOS</title>
+    <meta
+      name="description"
+      content="The HolyC language, measured from the TempleOS tree: directives, types, and his own documentation."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <a href="./explorer.html">Source</a>
+        <a href="./demands.html">Demands</a>
+        <span class="nav-current">Language</span>
+        <a href="./index.html#colophon">Sources</a>
+      </nav>
+      <nav aria-label="Tributes" class="topbar-sub">
+        <a href="./oracle.html">Oracle</a>
+        <a href="./compiler.html">Compiler</a>
+        <a href="./changelog.html">Changelog</a>
+        <a href="./gallery.html">Gallery</a>
+        <a href="./tour.html">Tour</a>
+        <a href="./manual.html">Manual</a>
+        <a href="./university.html">University</a>
+        <a href="./desktop.html">Desktop</a>
+        <a href="./demands.html">Demands</a>
+        <a href="./language.html">Language</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Compiler / &middot; HolyC</p>
+        <h1 class="hero-title">HolyC, in his own words</h1>
+        <p class="lede" id="lang-lede">
+          He invented a language for his operating system and then documented it himself. This is
+          that documentation, with the usage counts measured from the tree.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>The types</h2>
+        <p class="section-lede quiet">
+          Counted from every function definition in the tree. His integers are exactly as wide as
+          they say, and <code>U0</code> means <em>no return value</em>, not <code>void</code>.
+        </p>
+        <div class="type-grid" id="types"></div>
+      </section>
+
+      <section class="section">
+        <h2>The directives</h2>
+        <p class="section-lede quiet">
+          How often each one appears in the source tree, with his own description where he wrote
+          one.
+        </p>
+        <div class="directive-list" id="directives"></div>
+      </section>
+
+      <section class="section">
+        <h2>The quirks</h2>
+        <div class="quirks" id="quirks"></div>
+      </section>
+
+      <section class="section">
+        <h2>His own documentation</h2>
+        <div class="tiles" id="lang-docs"></div>
+      </section>
+
+      <footer class="foot">
+        <p>
+          Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+          independent reading of them.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/language.ts"></script>
+  </body>
+</html>

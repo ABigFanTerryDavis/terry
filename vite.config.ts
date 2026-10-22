@@ -20,6 +20,8 @@ export default defineConfig({
         manual: here('./manual.html'),
         university: here('./university.html'),
         desktop: here('./desktop.html'),
+        demands: here('./demands.html'),
+        language: here('./language.html'),
       },
     },
   },

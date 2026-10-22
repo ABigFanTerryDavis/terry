@@ -1805,3 +1805,223 @@ mark.hit {
     order: 99;
   }
 }
+
+/* --------------------------------------------------------------- demands */
+.scorecard {
+  border: 1px solid var(--line-soft);
+  margin-bottom: 1rem;
+}
+.score-row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 0 1.25rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: start;
+}
+.score-row:last-child {
+  border-bottom: none;
+}
+.verdict {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.2rem 0.3rem;
+  border: 1px solid;
+}
+.v-yes {
+  color: var(--accent-3);
+  border-color: rgba(85, 255, 85, 0.35);
+}
+.v-partly {
+  color: var(--accent-4);
+  border-color: rgba(255, 255, 85, 0.35);
+}
+.v-no {
+  color: var(--accent-1);
+  border-color: rgba(255, 85, 85, 0.35);
+}
+.score-demand {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.score-answer {
+  margin: 0 0 0.5rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+.score-answer:last-child {
+  margin-bottom: 0;
+}
+.score-note {
+  color: var(--ink-faint);
+  display: block;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+.demands {
+  border-top: 1px solid var(--line-soft);
+}
+.demand {
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.demand-text {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: 78ch;
+}
+.demand-notice .demand-text {
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+}
+.demand-counts {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--ink-dim);
+}
+.demand-counts li {
+  padding: 0.15rem 0;
+}
+.demand-counts strong {
+  color: var(--accent-4);
+  font-weight: 500;
+}
+.demand-files {
+  margin: 0.6rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+.demand-files a {
+  color: var(--accent-2);
+  margin-right: 0.8rem;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- language */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  margin-bottom: 2rem;
+}
+.type-cell {
+  background: var(--bg);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.type-name {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  color: var(--accent-3);
+}
+.type-bar {
+  height: 4px;
+  background: #12161a;
+}
+.type-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent-3);
+}
+.type-count {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+}
+
+.directive-list {
+  border-top: 1px solid var(--line-soft);
+  margin-bottom: 2rem;
+}
+.directive-row {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.directive-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+.directive-sig {
+  background: none;
+  border: none;
+  color: var(--accent-4);
+  font-size: 0.95rem;
+  padding: 0;
+}
+.directive-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  margin-left: auto;
+}
+.directive-desc {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 74ch;
+}
+.directive-src {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  display: inline-block;
+  margin-top: 0.35rem;
+}
+
+.quirks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  margin-bottom: 2rem;
+}
+.quirk {
+  margin: 0;
+  background: var(--bg);
+  padding: 1.25rem 1.35rem;
+}
+.quirk p {
+  margin: 0 0 0.6rem;
+  font-family: var(--serif);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.quirk cite {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-style: normal;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 860px) {
+  .score-row {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+  .score-answers {
+    grid-column: 1 / -1;
+    margin-top: 0.6rem;
+  }
+}

@@ -80,6 +80,27 @@ const PAGES = [
       ['directory shortcuts rendered', (d) => d.querySelectorAll('#desktop-dirs .tile').length >= 10],
     ],
   },
+  {
+    html: 'demands.html',
+    entry: 'demands',
+    checks: [
+      ['demands listed', (d) => d.querySelectorAll('.demand').length >= 18],
+      ['scorecard rows', (d) => d.querySelectorAll('.score-row').length >= 10],
+      ['verdicts rendered', (d) => d.querySelectorAll('.verdict').length >= 10],
+      ['secureboot demand present', (d) => (d.querySelector('#demands')?.textContent ?? '').includes('SecureBoot')],
+      ['line counts shown', (d) => d.querySelectorAll('.demand-counts li').length >= 3],
+    ],
+  },
+  {
+    html: 'language.html',
+    entry: 'language',
+    checks: [
+      ['twelve types', (d) => d.querySelectorAll('.type-cell').length === 12],
+      ['directives listed', (d) => d.querySelectorAll('.directive-row').length >= 8],
+      ['quirks quoted', (d) => d.querySelectorAll('.quirk').length >= 5],
+      ['doc index rendered', (d) => d.querySelectorAll('#lang-docs .tile').length >= 10],
+    ],
+  },
 ];
 
 let failed = 0;
