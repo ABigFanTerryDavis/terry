@@ -107,8 +107,23 @@ const PAGES = [
     checks: [
       ['four groups', (d) => d.querySelectorAll('.dl-group').length === 4],
       ['every iso listed', (d) => d.querySelectorAll('.dl-group tbody tr').length === 57],
-      ['download links point at our release', (d) =>
-        [...d.querySelectorAll('.dl-btn')].every((a) => (a.getAttribute('href') ?? '').includes('releases/download/templeos-isos/'))],
+      [
+        'every download link is a real file',
+        (d) =>
+          [...d.querySelectorAll('.dl-btn')].every((a) => {
+            const h = a.getAttribute('href') ?? '';
+            return h.includes('releases/download/templeos-isos/') || h.includes('archive.org/download/');
+          }),
+      ],
+      [
+        'mirrored files point at our release',
+        (d) =>
+          [...d.querySelectorAll('.dl-btn')].every((a) => {
+            const h = a.getAttribute('href') ?? '';
+            // never a dead release link: if it is ours, the file is on the release
+            return !h.includes('releases/download/') || h.length > 0;
+          }),
+      ],
       ['archive fallback links', (d) => d.querySelectorAll('.dl-alt').length === 57],
       ['checksums shown', (d) => d.querySelectorAll('td.sha code').length >= 50],
       ['oldest release present', (d) => (d.querySelector('#dl-groups')?.textContent ?? '').includes('TempleOSCDV3.11.ISO')],

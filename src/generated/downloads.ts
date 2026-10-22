@@ -14,6 +14,8 @@ export interface Download {
   sha256: string;
   mirror: string;
   archive: string;
+  /** true when the file is already on our own release */
+  mirrored: boolean;
 }
 
 export const downloads: Download[] = [
@@ -28,7 +30,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOS_logo.png",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_logo.png"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_logo.png",
+    "mirrored": false
   },
   {
     "path": "TempleOS_logo_thumb.jpg",
@@ -41,7 +44,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOS_logo_thumb.jpg",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_logo_thumb.jpg"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_logo_thumb.jpg",
+    "mirrored": false
   },
   {
     "path": "__ia_thumb.jpg",
@@ -54,7 +58,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/__ia_thumb.jpg",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/__ia_thumb.jpg"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/__ia_thumb.jpg",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV3.11.ISO",
@@ -67,7 +72,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "c1965a55b1361b75f1696fab1f28c4fe4bf7d1ba919d9fb9e77e27b64836eb9d",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV3.11.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV3.11.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV3.11.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV3.12.ISO",
@@ -80,7 +86,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "6522201afae8d3233eb74c80c1a4bd69f3a229c41d4bc38562b1025dfef1efe2",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV3.12.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV3.12.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV3.12.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.01.ISO",
@@ -93,7 +100,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "cdee74bb95c95847daf784ce29f643defd0a5e6b478a24ce7d253fe73fe47a1a",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.01.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.01.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.01.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.02.ISO",
@@ -106,7 +114,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "6489d906f04e7d6b36817346f0d5453df1f1f6b2b34838bb4d5f7c2d059c1771",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.02.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.02.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.02.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.03.ISO",
@@ -119,7 +128,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "fe3cf53f95bc37c58a17fd77167ea52c711c6520f16bfb9753eabdf31754b994",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.03.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.03.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.03.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.04.ISO",
@@ -132,7 +142,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "6d54afdb3e113911485d982baad5150bb36945ddae80fee23e535dab9c7add25",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.04.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.04.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.04.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.05.ISO",
@@ -145,7 +156,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "5d6a0c19713c0e59a05aabc50079248a9d8e1246e0b56cbcd347c930a92e6c67",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.05.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.05.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.05.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.06.ISO",
@@ -158,7 +170,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "155865f7b93d1f1844aebba7f2945a0e808550246e2740403459b8d1096f3ba2",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.06.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.06.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.06.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.08.ISO",
@@ -171,7 +184,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "1f73207a8771766793244dc2149bb3e044b8897684fdf29529124d96c384f2c1",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.08.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.08.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.08.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.09.ISO",
@@ -184,7 +198,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "63549c13ce37c2ff5cef955c783ecf8b232bbcbfd0c108d9e8be134ad08e065d",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.09.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.09.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.09.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.10.ISO",
@@ -197,7 +212,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "05f5d9fc04f7606c30de5f571ed0f407b821c673e67a1c9cbe7db239aa904f18",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.10.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.10.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.10.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.11.ISO",
@@ -210,7 +226,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "8ecf385c77ffaf2b55d596f3fcff8230338ed8eb1006d76efbe7e053398d88b7",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.11.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.11.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.11.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.12.ISO",
@@ -223,7 +240,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "3dcfb4165dacf0080edc249265149a4f8b80dc675815114f1911eeb21f4b08d7",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.12.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.12.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.12.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV4.13.ISO",
@@ -236,7 +254,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "d366f4624d802ae8a18109c3fea9dcc782cf1bf453900ec67c0d8c3af3be8637",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV4.13.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.13.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV4.13.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV5.00.ISO",
@@ -249,7 +268,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "c8ab9f8bc454047dc4d294b07c12dd58403e0c68b708d3022ebdef5680fe09e9",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV5.00.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.00.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.00.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV5.01.ISO",
@@ -262,7 +282,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "0bd8bf4ad6636c4c7aeeeb942a22d513a465b8d9a4d31cd4b384f6cbe610ba19",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV5.01.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.01.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.01.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV5.02.ISO",
@@ -275,7 +296,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "a3fad8f862941f624a0f0a27142e51e1a77bd1b7f31edd67709b3029230f4390",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV5.02.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.02.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.02.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOSCDV5.03.ISO",
@@ -288,7 +310,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "a7e2a4d940852b9680fa71ff11faf66daccd5db11741110ae43d54f72a245fdf",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCDV5.03.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.03.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOSCDV5.03.ISO",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.06_06-20.iso",
@@ -301,7 +324,8 @@ export const downloads: Download[] = [
     "date": "2017-11-06 06:20",
     "sha256": "8b943dd4ec23e26318916a5e5787b9160ab47e8cb3671ce327300b2c11143f95",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.06_06-20.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.06_06-20.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.06_06-20.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.13_02-33.iso",
@@ -314,7 +338,8 @@ export const downloads: Download[] = [
     "date": "2017-11-13 02:33",
     "sha256": "ba92f072ab834b0bfe58f1981128b97acca98909659a432c02e630b75ddc6126",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.13_02-33.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.13_02-33.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.13_02-33.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.13_02-34.iso",
@@ -327,7 +352,8 @@ export const downloads: Download[] = [
     "date": "2017-11-13 02:34",
     "sha256": "9771914eb3b057b88aa344fc021685cc7fd9e47cd5f053fa5050154356d10697",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.13_02-34.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.13_02-34.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.13_02-34.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.14_18-04.iso",
@@ -340,7 +366,8 @@ export const downloads: Download[] = [
     "date": "2017-11-14 18:04",
     "sha256": "2c66d7cc0868aadf5439529007f56eb3325167c63c723fb58367d7b34d0f2d8a",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.14_18-04.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.14_18-04.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.14_18-04.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.14_18-04.iso",
@@ -353,7 +380,8 @@ export const downloads: Download[] = [
     "date": "2017-11-14 18:04",
     "sha256": "40b2d988964604f2c1159454549861b29210a02992c00aa8398449ba8b646729",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.14_18-04.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.14_18-04.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.14_18-04.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.17_04-08.iso",
@@ -366,7 +394,8 @@ export const downloads: Download[] = [
     "date": "2017-11-17 04:08",
     "sha256": "d1f3a3181ee5b943cc1cba452459d19588e56586f1617dc301e29a196160b53e",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.17_04-08.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.17_04-08.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.17_04-08.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.18_14-04.iso",
@@ -379,7 +408,8 @@ export const downloads: Download[] = [
     "date": "2017-11-18 14:04",
     "sha256": "2227f40c72f8da4ba5170cb161d07f05da2d5c0b0ba49b76f12ee899ef598e42",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.18_14-04.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.18_14-04.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.18_14-04.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.18_14-08.iso",
@@ -392,7 +422,8 @@ export const downloads: Download[] = [
     "date": "2017-11-18 14:08",
     "sha256": "1e71e20149ae564af95754964350798d59b1664608f46cea78c94356c7b04d58",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.18_14-08.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.18_14-08.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.18_14-08.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.19_05-13.iso",
@@ -405,7 +436,8 @@ export const downloads: Download[] = [
     "date": "2017-11-19 05:13",
     "sha256": "c5a62605433757208c319951e70917a01d66fd4fd970624def610e95783865df",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.19_05-13.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.19_05-13.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.19_05-13.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.19_05-13.iso",
@@ -418,7 +450,8 @@ export const downloads: Download[] = [
     "date": "2017-11-19 05:13",
     "sha256": "a0bbed97e528f67e1e37d8015cd2ce625db02133c51d7d50cdb91b0212912d6b",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.19_05-13.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.19_05-13.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.19_05-13.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.20_17-42.iso",
@@ -431,7 +464,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 17:42",
     "sha256": "270ae4cd41c86b2ffc15d781929b1a3e3b3b46e546cc1c500373a3c597ff6dc7",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.20_17-42.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_17-42.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_17-42.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.20_17-42.iso",
@@ -444,7 +478,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 17:42",
     "sha256": "cf43b098749c133fa35d8c2a5c0b92bbafe1f258a393df3f190c95e557311860",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.20_17-42.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_17-42.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_17-42.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.20_19-19.iso",
@@ -457,7 +492,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:19",
     "sha256": "0756c3168172fcf3a21f7586af0982b351de0be2057bb7f53a3fda292b11dd60",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.20_19-19.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_19-19.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_19-19.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.20_19-19.iso",
@@ -470,7 +506,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:19",
     "sha256": "954b2481069f3336653abe40f4cb23db1d22083044251314ec74b368ca520813",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.20_19-19.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_19-19.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_19-19.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_lite_2017.11.20_19-51.iso",
@@ -483,7 +520,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:51",
     "sha256": "961e0bcfeac2371714d09b688bcea8bde3b3dbb27808b52ff75c1cf73c2507f7",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_lite_2017.11.20_19-51.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_19-51.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_lite_2017.11.20_19-51.iso",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_supplemental1.iso.c_2017.11.20_19-51.c",
@@ -496,7 +534,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:51",
     "sha256": "fac6ce2eec2b928384ac9d1fec4d50904980f2af0e42775647afa01db1584923",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_supplemental1.iso.c_2017.11.20_19-51.c",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental1.iso.c_2017.11.20_19-51.c"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental1.iso.c_2017.11.20_19-51.c",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_supplemental2.iso.c_2017.11.20_19-51.c",
@@ -509,7 +548,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:51",
     "sha256": "5130ab6a6261460d2e437b672cc64fdbedeadc3b92308a7bb61f76092397deaa",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_supplemental2.iso.c_2017.11.20_19-51.c",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental2.iso.c_2017.11.20_19-51.c"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental2.iso.c_2017.11.20_19-51.c",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_supplemental3.iso.c_2017.11.20_19-51.c",
@@ -522,7 +562,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:51",
     "sha256": "dc1ed4de6f2a3be9ca129417b36d703e3d8831aae16546cec295e6c804442b01",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_supplemental3.iso.c_2017.11.20_19-51.c",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental3.iso.c_2017.11.20_19-51.c"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_supplemental3.iso.c_2017.11.20_19-51.c",
+    "mirrored": false
   },
   {
     "path": "TempleOS_V5.03/Tos_distro_2017.11.20_19-52.iso",
@@ -535,7 +576,8 @@ export const downloads: Download[] = [
     "date": "2017-11-20 19:52",
     "sha256": "3c68ca395d0b64f779f1ffa330e2685798b17862e3c36ae4e349537fd676b40b",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Tos_distro_2017.11.20_19-52.iso",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_19-52.iso"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/TempleOS_V5.03/Tos_distro_2017.11.20_19-52.iso",
+    "mirrored": false
   },
   {
     "path": "Historic/HOPPY_Archive.zip",
@@ -548,7 +590,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "fd4ef4af24cb94f8e8a806a45f63f190eb0bbabc4d44f6336ca14d63797a46b3",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/HOPPY_Archive.zip",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/HOPPY_Archive.zip"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/HOPPY_Archive.zip",
+    "mirrored": true
   },
   {
     "path": "Historic/SparrowOSTS_121127.ISO",
@@ -561,7 +604,8 @@ export const downloads: Download[] = [
     "date": "2012-11-27",
     "sha256": "68422875a5b8f0d42a2cb82bc35d2b6b87727158dcea0f0e1be61d00e45aee84",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/SparrowOSTS_121127.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/SparrowOSTS_121127.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/SparrowOSTS_121127.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/JCD_051231.ISO",
@@ -574,7 +618,8 @@ export const downloads: Download[] = [
     "date": "2005-12-31",
     "sha256": "0e4b3021e24122ed96442a3f9891136b6e0bd2f113b5a53807490b0eaeeedae7",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/JCD_051231.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/JCD_051231.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/JCD_051231.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/LTCD_060719.ISO",
@@ -587,7 +632,8 @@ export const downloads: Download[] = [
     "date": "2006-07-19",
     "sha256": "a9a59f4453b4aacda47fcb4f18fe92366aa19374538d1f2db3713ea615d9f94e",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/LTCD_060719.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_060719.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_060719.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/LTCD_060720.ISO",
@@ -600,7 +646,8 @@ export const downloads: Download[] = [
     "date": "2006-07-20",
     "sha256": "6ceb30c52596f1ec96c4926e41cb2e98fbea17056202e355b53539c67bf09f52",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/LTCD_060720.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_060720.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_060720.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/LTCD_070816.ISO",
@@ -613,7 +660,8 @@ export const downloads: Download[] = [
     "date": "2007-08-16",
     "sha256": "603108dadad5ce641214b1056773249b1f219665ee1f63d9cecb2c01562c7ddd",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/LTCD_070816.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_070816.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/LTCD_070816.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSTS_130315.ISO",
@@ -626,7 +674,8 @@ export const downloads: Download[] = [
     "date": "2013-03-15",
     "sha256": "b05dd098ab4e7a5fbe433edff3271be2812d4eb348a3ccf2b18dfce83a1f1e28",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSTS_130315.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_130315.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_130315.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSTS_130707.ISO",
@@ -639,7 +688,8 @@ export const downloads: Download[] = [
     "date": "2013-07-07",
     "sha256": "000ffcb0726acc7e9ea027eacc7df0d66173e56269c73fc985c1e01b29b4e279",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSTS_130707.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_130707.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_130707.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSTS_131005.ISO",
@@ -652,7 +702,8 @@ export const downloads: Download[] = [
     "date": "2013-10-05",
     "sha256": "2a04f47df7b205fd43887e64849d0787f6b341ac4afd58dbcd96a8d55e24ffba",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSTS_131005.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_131005.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_131005.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSTS_140317.ISO",
@@ -665,7 +716,8 @@ export const downloads: Download[] = [
     "date": "2014-03-17",
     "sha256": "6a84a6d8e5eb71112d021f43594adc236e713301ea8be12205f3247953552386",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSTS_140317.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_140317.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSTS_140317.ISO",
+    "mirrored": false
   },
   {
     "path": "Historic/TempleOSCD_140715.ISO",
@@ -678,7 +730,8 @@ export const downloads: Download[] = [
     "date": "2014-07-15",
     "sha256": "2c8a1f67ad952a0bc8ffb81b60696836f5fe28807b7e58e12bc920e35a9b8627",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCD_140715.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_140715.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_140715.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSCD_150216.ISO",
@@ -691,7 +744,8 @@ export const downloads: Download[] = [
     "date": "2015-02-16",
     "sha256": "0f7774440b2526ba10f9014ecd7bd34f0034ebce91e057d2510b0a2ed0b63f18",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCD_150216.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_150216.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_150216.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSCD_150720.ISO",
@@ -704,7 +758,8 @@ export const downloads: Download[] = [
     "date": "2015-07-20",
     "sha256": "d80734b4a4527a542ce25a424023dc46a64154e60bab96d80af3a3b59432d40d",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCD_150720.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_150720.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_150720.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSCD_160103.ISO",
@@ -717,7 +772,8 @@ export const downloads: Download[] = [
     "date": "2016-01-03",
     "sha256": "5dc0ac0531055fd5032fffa4cf1ab0e92c42ddc473dd79d0c96fba064135fdf5",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCD_160103.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_160103.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_160103.ISO",
+    "mirrored": true
   },
   {
     "path": "Historic/TempleOSCD_160707.ISO",
@@ -730,7 +786,8 @@ export const downloads: Download[] = [
     "date": "2016-07-07",
     "sha256": "cadfbdfbdd43c938f9016895b362da368220d8b7ceb9570232b0e4e58fe7dc47",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/TempleOSCD_160707.ISO",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_160707.ISO"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Historic/TempleOSCD_160707.ISO",
+    "mirrored": true
   },
   {
     "path": "Tools/Essentials.ISO.C.zip",
@@ -743,7 +800,8 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/Essentials.ISO.C.zip",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Tools/Essentials.ISO.C.zip"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Tools/Essentials.ISO.C.zip",
+    "mirrored": false
   },
   {
     "path": "Tools/RedSeaExplorer.zip",
@@ -756,11 +814,12 @@ export const downloads: Download[] = [
     "date": "",
     "sha256": "",
     "mirror": "https://github.com/ABigFanTerryDavis/terry/releases/download/templeos-isos/RedSeaExplorer.zip",
-    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Tools/RedSeaExplorer.zip"
+    "archive": "https://archive.org/download/TempleOS_ISO_Archive/Tools/RedSeaExplorer.zip",
+    "mirrored": false
   }
 ];
 
-export const downloadTotals = {"files":57,"bytes":773481272,"withSum":52,"families":["HOPPY","J-OS","LoseThos","SparrowOS","TempleOS"]};
+export const downloadTotals = {"files":57,"bytes":773481272,"withSum":52,"mirrored":14,"families":["HOPPY","J-OS","LoseThos","SparrowOS","TempleOS"]};
 
 export const ARCHIVE_ITEM = 'https://archive.org/details/TempleOS_ISO_Archive';
 export const RELEASE_TAG = "templeos-isos";

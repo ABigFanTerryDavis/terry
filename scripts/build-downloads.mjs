@@ -48,6 +48,29 @@ for (const f of sumFiles) {
   }
 }
 
+/* ------------------------------------------------- what we have mirrored */
+
+// Which files are already on our own release? The public GitHub API serves
+// this without auth for a public repo. If the release does not exist yet, or
+// the network is down, we mark nothing as mirrored and the page falls back to
+// the archive for those files.
+const REPO = 'ABigFanTerryDavis/terry';
+let mirroredNames = new Set();
+try {
+  const res = await fetch(`https://api.github.com/repos/${REPO}/releases/tags/${RELEASE_TAG}`, {
+    headers: { 'User-Agent': 'terry-tribute' },
+  });
+  if (res.ok) {
+    const rel = await res.json();
+    mirroredNames = new Set((rel.assets || []).map((a) => a.name));
+    console.log(`release ${RELEASE_TAG}: ${mirroredNames.size} assets mirrored`);
+  } else {
+    console.log(`release ${RELEASE_TAG}: not found (${res.status}); falling back to the archive`);
+  }
+} catch (e) {
+  console.log(`release lookup failed (${e.message}); falling back to the archive`);
+}
+
 /* --------------------------------------------------------- the catalogue */
 
 /** The sums spell names differently to the archive: case, and _ vs space. */
@@ -129,6 +152,7 @@ const entries = listing.map((f) => {
     // Ours, once mirrored to the release; and the canonical archive copy.
     mirror: RELEASE_BASE + encodeURIComponent(assetName),
     archive: ARCHIVE_BASE + f.name.split('/').map(encodeURIComponent).join('/'),
+    mirrored: mirroredNames.has(assetName),
   };
 });
 
@@ -147,6 +171,7 @@ const totals = {
   files: entries.length,
   bytes: entries.reduce((n, e) => n + e.bytes, 0),
   withSum: entries.filter((e) => e.sha256).length,
+  mirrored: entries.filter((e) => e.mirrored).length,
   families: [...new Set(entries.map((e) => e.family))].sort(),
 };
 
@@ -166,6 +191,8 @@ export interface Download {
   sha256: string;
   mirror: string;
   archive: string;
+  /** true when the file is already on our own release */
+  mirrored: boolean;
 }
 
 export const downloads: Download[] = ${JSON.stringify(entries, null, 2)};

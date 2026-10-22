@@ -118,13 +118,16 @@ function render(): void {
       tdGet.className = 'num';
       const a = document.createElement('a');
       a.className = 'dl-btn';
-      a.href = d.mirror;
+      // Prefer our own mirror once the file is actually on the release;
+      // until then, point the download straight at the archive.
+      a.href = d.mirrored ? d.mirror : d.archive;
       a.textContent = 'download';
       a.setAttribute('download', d.asset);
+      a.title = d.mirrored ? 'From our own mirror' : 'From the Internet Archive';
       const ar = document.createElement('a');
       ar.className = 'dl-alt';
-      ar.href = d.archive;
-      ar.textContent = 'archive.org';
+      ar.href = d.mirrored ? d.archive : d.mirror;
+      ar.textContent = d.mirrored ? 'archive.org' : 'our mirror';
       ar.target = '_blank';
       ar.rel = 'noopener';
       tdGet.append(a, ar);
@@ -156,7 +159,8 @@ function boot(): void {
   $('#dl-note').textContent =
     `The catalogue covers ${t.families.join(', ')} — ${t.files} files in all. ` +
     `Checksums are published for ${t.withSum} of them. The canonical copy of every file lives at ` +
-    `the Internet Archive; the download links here point at our own mirror of the same bytes.`;
+    `the Internet Archive; ${t.mirrored} of these are also mirrored on our own release, and the ` +
+    `rest download from the archive until they are.`;
 
   $('#dl-filter').addEventListener('input', render);
   $('#dl-verified').addEventListener('change', render);
