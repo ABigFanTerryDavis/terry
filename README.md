@@ -26,6 +26,7 @@ replayed from the `Play()` notation strings in his code.
 | **University** (`university.html`) | His 13 own lectures from `Demo/Lectures` — including a compiler written as a lesson. |
 | **Desktop** (`desktop.html`) | His actual home screen, rebuilt from `PersonalMenu.DD` and `Doc/Welcome.DD`. |
 | **Search** | One box on every page, across the site prose and all 659 source files. Press `/`. |
+| **Downloads** (`downloads.html`) | Every ISO that exists â€” 57 files, 737 MB, from HOPPY to 5.03 â€” mirrored to our own release, with the published SHA-256 sums. |
 | **Explorer** (`explorer.html`) | All **659 files**, browsable and searchable — by path, or by content with `text:`. DolDoc files get a reading mode; every file deep-links by line and copies with one click. Per-file line counts match the Autopsy charts exactly. |
 
 ## The source explorer

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Every TempleOS ISO — TempleOS</title>
+    <meta
+      name="description"
+      content="Every TempleOS, LoseThos, SparrowOS, J-OS and HOPPY ISO that exists, with checksums, for download."
+    />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <nav aria-label="Sections">
+        <a href="./index.html">The record</a>
+        <a href="./index.html#autopsy">Autopsy</a>
+        <a href="./index.html#listen">Listen</a>
+        <a href="./explorer.html">Source</a>
+        <span class="nav-current">Downloads</span>
+        <a href="./demands.html">Demands</a>
+        <a href="./language.html">Language</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Public domain</p>
+        <h1 class="hero-title">Every ISO</h1>
+        <p class="lede" id="dl-lede">
+          Every release he ever shipped, from HOPPY in 2004 to the last TempleOS build in 2017 —
+          plus the 5.03 snapshots, the supplemental discs, and the tools. All of it, none of it
+          held back.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>How to run one</h2>
+        <div class="prose-grid">
+          <div>
+            <h3>It is 64-bit, and it matters</h3>
+            <p>
+              TempleOS and its predecessors need a 64-bit machine. QEMU works, and so does VMware,
+              and that is where the community still runs it.
+            </p>
+            <p>
+              He asked for 512&nbsp;MB of RAM as a minimum. He was not exaggerating.
+            </p>
+          </div>
+          <div>
+            <h3>Check the hash</h3>
+            <p>
+              Every download here has a SHA-256, taken from the checksums published alongside the
+              originals. Copy the hex, run it through any hash tool, and you have proof you are
+              running the bytes he shipped and not a corrupted copy.
+            </p>
+          </div>
+        </div>
+        <p class="fineprint" id="dl-note"></p>
+      </section>
+
+      <section class="section">
+        <h2>The catalogue</h2>
+        <div class="dl-controls">
+          <input
+            id="dl-filter"
+            type="search"
+            placeholder="filter by name, version or family"
+            aria-label="Filter downloads"
+            autocomplete="off"
+          />
+          <label class="dl-toggle">
+            <input type="checkbox" id="dl-verified" />
+            <span>only ones with a checksum</span>
+          </label>
+        </div>
+        <div class="dl-groups" id="dl-groups"></div>
+        <p class="fineprint">
+          Sizes and checksums are the published ones. The
+          <a href="./explorer.html">source tree</a> and every
+          <a href="./index.html">measurement</a> on this site come from the same public-domain
+          archive.
+        </p>
+      </section>
+
+      <footer class="foot">
+        <p>
+          Built as a tribute. TempleOS and its source belong to the public domain; this page is an
+          independent reading of them.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/downloads.ts"></script>
+  </body>
+</html>

@@ -13,7 +13,7 @@
     "test:doldoc": "esbuild src/doldoc.ts --bundle --format=esm --outfile=.cache/doldoc.bundle.mjs --log-level=warning && node test/doldoc.test.mjs",
     "test:smoke": "esbuild src/main.ts --bundle --format=cjs --outfile=.cache/main.bundle.cjs --log-level=warning --loader:.css=empty && node test/smoke.test.mjs",
     "test:explorer": "esbuild src/explorer.ts --bundle --format=cjs --outfile=.cache/explorer.bundle.cjs --log-level=warning --loader:.css=empty && node test/explorer.test.mjs",
-    "test:pages": "esbuild src/oracle.ts src/compiler.ts src/changelog.ts src/gallery.ts src/tour.ts src/manual.ts src/university.ts src/desktop.ts src/demands.ts src/language.ts --bundle --format=cjs --outdir=.cache --out-extension:.js=.bundle.cjs --log-level=warning --loader:.css=empty && node test/pages.test.mjs",
+    "test:pages": "esbuild src/oracle.ts src/compiler.ts src/changelog.ts src/gallery.ts src/tour.ts src/manual.ts src/university.ts src/desktop.ts src/demands.ts src/language.ts src/downloads.ts --bundle --format=cjs --outdir=.cache --out-extension:.js=.bundle.cjs --log-level=warning --loader:.css=empty && node test/pages.test.mjs",
     "test:search": "esbuild src/search-ui.ts --bundle --format=cjs --outfile=.cache/search.bundle.cjs --log-level=warning --loader:.css=empty && node test/search.test.mjs",
     "test:all": "npm run typecheck && npm test && npm run test:doldoc && npm run build && node test/smoke.test.mjs && npm run test:explorer && npm run test:pages && npm run test:search",
     "data": "node scripts/analyze-source.mjs && node scripts/extract-assets.mjs && node scripts/extract-chapters.mjs && node scripts/regen.mjs && node scripts/build-explorer.mjs"

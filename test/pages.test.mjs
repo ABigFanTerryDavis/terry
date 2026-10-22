@@ -101,6 +101,20 @@ const PAGES = [
       ['doc index rendered', (d) => d.querySelectorAll('#lang-docs .tile').length >= 10],
     ],
   },
+  {
+    html: 'downloads.html',
+    entry: 'downloads',
+    checks: [
+      ['four groups', (d) => d.querySelectorAll('.dl-group').length === 4],
+      ['every iso listed', (d) => d.querySelectorAll('.dl-group tbody tr').length === 57],
+      ['download links point at our release', (d) =>
+        [...d.querySelectorAll('.dl-btn')].every((a) => (a.getAttribute('href') ?? '').includes('releases/download/templeos-isos/'))],
+      ['archive fallback links', (d) => d.querySelectorAll('.dl-alt').length === 57],
+      ['checksums shown', (d) => d.querySelectorAll('td.sha code').length >= 50],
+      ['oldest release present', (d) => (d.querySelector('#dl-groups')?.textContent ?? '').includes('TempleOSCDV3.11.ISO')],
+      ['historic family present', (d) => (d.querySelector('#dl-groups')?.textContent ?? '').includes('LTCD_060719.ISO')],
+    ],
+  },
 ];
 
 let failed = 0;

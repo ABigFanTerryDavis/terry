@@ -22,6 +22,7 @@ export default defineConfig({
         desktop: here('./desktop.html'),
         demands: here('./demands.html'),
         language: here('./language.html'),
+        downloads: here('./downloads.html'),
       },
     },
   },
